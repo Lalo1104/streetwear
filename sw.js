@@ -1,8 +1,6 @@
 // Service Worker avanzado para StreetWearX PWA
 const CACHE_VERSION = 'v3';
 const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
-
-// Rutas base de GitHub Pages
 const BASE_PATH = '/streetwear';
 
 // Archivos esenciales para que la app siempre cargue offline
@@ -13,7 +11,7 @@ const urlsToCache = [
   `${BASE_PATH}/favicon.png`
 ];
 
-// Instalación del Service Worker
+// Instalación
 self.addEventListener('install', (event) => {
   console.log('[SW] Instalando…');
   event.waitUntil(
@@ -27,42 +25,37 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activación del Service Worker
+// Activación
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activando…');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
             console.log('[SW] Eliminando cache antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
-      );
-    })
+      )
+    )
   );
   self.clients.claim();
 });
 
-// Estrategia de fetch:
-// - Para navegaciones (HTML): Network First → fallback a index.html
-// - Para Firebase/Cloudinary/APIs: Network First con fallback a cache
-// - Para estáticos (CSS, JS, imágenes): Cache First con actualización
+// FETCH: navegación, APIs y estáticos
 self.addEventListener('fetch', (event) => {
   const req = event.request;
 
-  // Solo manejamos GET
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // 1) Navegaciones (cuando el usuario entra a la app)
+  // 1) Navegación (HTML) → Network First, fallback a index.html
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req)
         .then((networkRes) => {
-          // Cacheamos la respuesta de navegación si es válida
           if (networkRes && networkRes.status === 200) {
             const resClone = networkRes.clone();
             caches.open(CACHE_NAME).then((cache) => {
@@ -72,15 +65,16 @@ self.addEventListener('fetch', (event) => {
           return networkRes;
         })
         .catch(() => {
-          // Si no hay red, devolvemos el index.html desde cache
           return caches.match(`${BASE_PATH}/index.html`)
-            .then((cachedRes) => cachedRes || new Response('Offline - No se pudo cargar la app', { status: 503 }));
+            .then((cachedRes) =>
+              cachedRes || new Response('Offline - No se pudo cargar la app', { status: 503 })
+            );
         })
     );
     return;
   }
 
-  // 2) Firebase / Google APIs / Cloudinary → Network First
+  // 2) Firebase / Google APIs / Cloudinary → Network First con fallback a cache
   if (
     url.hostname.includes('firebase') ||
     url.hostname.includes('googleapis.com') ||
@@ -99,19 +93,20 @@ self.addEventListener('fetch', (event) => {
           return networkRes;
         })
         .catch(() => {
-          // Si no hay red, intentamos devolver lo que tengamos en cache para esa misma URL
           return caches.match(req)
-            .then((cachedRes) => cachedRes || new Response('Offline - Datos no disponibles', { status: 503 }));
+            .then((cachedRes) =>
+              cachedRes || new Response('Offline - Datos no disponibles', { status: 503 })
+            );
         })
     );
     return;
   }
 
-  // 3) Otros recursos estáticos (CSS, JS, imágenes, etc.) → Cache First
+  // 3) Estáticos (CSS, JS, imágenes…) → Cache First con actualización en segundo plano
   event.respondWith(
     caches.match(req).then((cachedRes) => {
       if (cachedRes) {
-        // Devolvemos desde cache y de fondo intentamos actualizar
+        // Actualiza en segundo plano si hay red
         fetch(req)
           .then((networkRes) => {
             if (!networkRes || networkRes.status !== 200) return;
@@ -120,12 +115,11 @@ self.addEventListener('fetch', (event) => {
               cache.put(req, resClone);
             });
           })
-          .catch(() => { /* sin red, no pasa nada */ });
-
+          .catch(() => {});
         return cachedRes;
       }
 
-      // Si no estaba en cache, vamos a red y lo cacheamos
+      // No estaba en cache → intenta red y cachea
       return fetch(req)
         .then((networkRes) => {
           if (!networkRes || networkRes.status !== 200) {
@@ -138,7 +132,6 @@ self.addEventListener('fetch', (event) => {
           return networkRes;
         })
         .catch(() => {
-          // Si falla todo
           return new Response('Offline - Recurso no disponible', { status: 503 });
         });
     })
