@@ -2745,5 +2745,24 @@
             navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
         }
     </script>
-<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js');}</script></body>
+<script>
+  // Registro del Service Worker para la PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          console.log('Service Worker registrado correctamente:', reg.scope);
+          const status = document.getElementById('appStatus');
+          if (status) status.textContent = 'PWA lista: Service Worker activo';
+        })
+        .catch(err => {
+          console.error('Error al registrar el Service Worker:', err);
+          const status = document.getElementById('appStatus');
+          if (status) status.textContent = 'Error al registrar el Service Worker';
+        });
+    });
+  }
+</script>
+</body>
+</html></body>
 </html>
