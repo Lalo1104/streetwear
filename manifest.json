@@ -1,10 +1,28 @@
 {
-"name":"StreetWearX - Tienda de Ropa Urbana",
-"short_name":"StreetWearX",
-"start_url":"./",
-"scope":"./",
-"display":"standalone",
-"background_color":"#ffffff",
-"theme_color":"#1a1a1a",
-"icons":[{"src":"favicon.png","sizes":"192x192","type":"image/png"}]
+  "name": "StreetWearX - Tienda de Ropa Urbana",
+  "short_name": "StreetWearX",
+  "description": "PWA de StreetWearX: tienda de ropa urbana con modo cliente y administrador.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
 }
