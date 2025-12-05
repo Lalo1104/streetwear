@@ -1,5 +1,5 @@
 {
-  "name": "StreetWearX - Tienda de Ropa Urbana",
+  "name": " streerwear - Tienda de Ropa Urbana",
   "short_name": "streetwear",
   "description": "Tu tienda de ropa urbana favorita. Compra las mejores prendas de moda urbana",
   "start_url": "/streetwear/",
@@ -35,21 +35,21 @@
       "name": "Hombres",
       "short_name": "Hombres",
       "description": "Ver colección de hombres",
-      "url": "/StreetWearX/?category=hombres",
+      "url": "/streetwear/?category=hombres",
       "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
     },
     {
       "name": "Mujeres",
       "short_name": "Mujeres",
       "description": "Ver colección de mujeres",
-      "url": "/StreetWearX/?category=mujeres",
+      "url": "/streetwear/?category=mujeres",
       "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
     },
     {
       "name": "Carrito",
       "short_name": "Carrito",
       "description": "Ver carrito de compras",
-      "url": "/StreetWearX/?view=cart",
+      "url": "/streetwear/?view=cart",
       "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
     }
   ]
