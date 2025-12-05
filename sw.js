@@ -1,6 +1,6 @@
-// Service Worker para streetwear PWA con soporte OFFLINE de productos
+// Service Worker para StreetWearX PWA
 const CACHE_VERSION = 'v2';
-const CACHE_NAME = `streetwear-${CACHE_VERSION}`;
+const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
 
 const urlsToCache = [
   '/streetwear/',
@@ -102,12 +102,12 @@ self.addEventListener('push', (event) => {
     body: data.body || 'Nueva notificación de StreetWearX',
     icon: '/streetwear/favicon.png',
     badge: '/streetwear/favicon.png',
-    tag: 'streetwear',
+    tag: 'streetwearx',
     requireInteraction: false
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'streetwear', options)
+    self.registration.showNotification(data.title || 'StreetWearX', options)
   );
 });
 
