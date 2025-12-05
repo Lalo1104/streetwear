@@ -1750,6 +1750,42 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        // =========================
+// IndexedDB para modo OFFLINE
+// =========================
+let dbIDB;
+const request = indexedDB.open("StreetWearXDB", 1);
+
+request.onupgradeneeded = function (event) {
+  dbIDB = event.target.result;
+  if (!dbIDB.objectStoreNames.contains("products")) {
+    dbIDB.createObjectStore("products", { keyPath: "id" });
+  }
+};
+
+request.onsuccess = function (event) {
+  dbIDB = event.target.result;
+  console.log("IndexedDB lista ✔");
+};
+
+function saveProductsToIDB(products) {
+  return new Promise((resolve) => {
+    const tx = dbIDB.transaction("products", "readwrite");
+    const store = tx.objectStore("products");
+    store.clear();
+    products.forEach((p) => store.put(p));
+    tx.oncomplete = resolve;
+  });
+}
+
+function getProductsFromIDB() {
+  return new Promise((resolve) => {
+    const tx = dbIDB.transaction("products", "readonly");
+    const store = tx.objectStore("products");
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result);
+  });
+}
 // 🔥 Activar modo offline de Firestore (admin + clientes)
 enableIndexedDbPersistence(db).catch((err) => {
   console.warn('No se pudo activar la persistencia offline de Firestore:', err.code || err);
@@ -2024,83 +2060,58 @@ enableIndexedDbPersistence(db).catch((err) => {
         
         };
 
-// 🔥 Load Products con soporte OFFLINE
+// 🚀 Load Products con soporte OFFLINE + actualización UI
 async function loadProducts() {
   const s = document.getElementById('appStatus');
   if (s) s.textContent = 'Cargando productos...';
 
   try {
-    // 1. Intentar obtener productos desde Firebase
+    // 1. Intentar obtener productos ONLINE de Firebase
     const querySnapshot = await getDocs(collection(db, 'products'));
     window.allProducts = [];
 
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((docSnap) => {
       window.allProducts.push({
-        id: doc.id,
-        ...doc.data()
+        id: docSnap.id,
+        ...docSnap.data()
       });
     });
 
-    // 2. Guardar productos localmente para uso offline
+    // Guardar offline
     await saveProductsToIDB(window.allProducts);
-    console.log("Productos cargados de Firebase y guardados en IndexedDB");
 
     if (s) s.textContent = 'Productos cargados (online)';
-  } catch (error) {
-    console.warn('⚠ No hay conexión o fallo Firebase, cargando desde IndexedDB...', error);
+    console.log("Productos cargados desde Firebase ✔");
 
+  } catch (error) {
+
+    console.warn("No hay conexión, cargando desde IndexedDB…");
+
+    // 2. Cargar desde IndexedDB (OFFLINE)
     const localProducts = await getProductsFromIDB();
 
     if (localProducts && localProducts.length > 0) {
       window.allProducts = localProducts;
-      if (s) s.textContent = 'Productos cargados en modo offline';
+      if (s) s.textContent = 'Productos cargados (offline)';
+      console.log("Productos cargados offline ✔");
     } else {
-      console.error('No hay productos guardados offline');
-      if (s) s.textContent = 'No se pudieron cargar productos.';
+      console.error("No hay productos guardados offline ❌");
       window.allProducts = [];
+      if (s) s.textContent = "No se pudieron cargar productos.";
     }
   }
 
+  // 3. Actualizar filtros + UI
   window.filteredProducts = window.allProducts;
-  renderProducts(window.filteredProducts);
-}
+  window.currentSubcategoryFilter = "";
 
-    // 2. Guardar en IndexedDB para uso OFFLINE
-    try {
-      await saveProductsToIDB(window.allProducts);
-      console.log('Productos guardados en IndexedDB');
-    } catch (e) {
-      console.warn('No se pudieron guardar productos en IndexedDB', e);
-    }
-
-    if (s) s.textContent = 'Productos cargados (online)';
-  } catch (error) {
-    console.warn('⚠ No hay conexión o fallo Firebase, cargando desde IndexedDB...', error);
-
-    const localProducts = await getProductsFromIDB();
-
-    if (localProducts && localProducts.length > 0) {
-      window.allProducts = localProducts;
-      if (s) s.textContent = 'Productos cargados en modo offline';
-    } else {
-      console.error('No hay productos guardados offline');
-      window.allProducts = [];
-      if (s) s.textContent = 'No se pudieron cargar productos.';
-    }
-  }
-
-  // 3. Actualizar filtros y UI (igual que antes)
-  window.filteredProducts = window.allProducts;
-  window.currentSubcategoryFilter = '';
-
-  // Usa las mismas funciones que ya tienes en el proyecto
   displayProducts(window.filteredProducts);
   renderCarousel();
 
   const s2 = document.getElementById('appStatus');
   if (s2) s2.textContent = 'Productos cargados: ' + window.allProducts.length;
 
-  // 4. Si el usuario logueado es admin, recargar la lista del panel admin
+  // Cargar panel admin si aplica
   if (window.isAdmin) {
     await loadAdminProducts();
   }
