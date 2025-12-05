@@ -1,12 +1,12 @@
-// Service Worker para StreetWearX PWA con soporte OFFLINE de productos
+// Service Worker para streetwear PWA con soporte OFFLINE de productos
 const CACHE_VERSION = 'v2';
-const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
+const CACHE_NAME = `streetwear-${CACHE_VERSION}`;
 
 const urlsToCache = [
-  '/StreetWearX/',
-  '/StreetWearX/index.html',
-  '/StreetWearX/manifest.json',
-  '/StreetWearX/favicon.png'
+  '/streetwear/',
+  '/streetwear/index.html',
+  '/streetwear/manifest.json',
+  '/streetwear/favicon.png'
 ];
 
 // Instalación del Service Worker
@@ -89,7 +89,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           // fallback a la página principal offline
-          return caches.match('/StreetWearX/index.html');
+          return caches.match('/streetwear/index.html');
         });
     })
   );
@@ -100,14 +100,14 @@ self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
   const options = {
     body: data.body || 'Nueva notificación de StreetWearX',
-    icon: '/StreetWearX/favicon.png',
-    badge: '/StreetWearX/favicon.png',
-    tag: 'streetwearx',
+    icon: '/streetwear/favicon.png',
+    badge: '/streetwear/favicon.png',
+    tag: 'streetwear',
     requireInteraction: false
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'StreetWearX', options)
+    self.registration.showNotification(data.title || 'streetwear', options)
   );
 });
 
@@ -117,12 +117,12 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then((clientList) => {
       for (let client of clientList) {
-        if (client.url.includes('/StreetWearX/') && 'focus' in client) {
+        if (client.url.includes('/streetwear/') && 'focus' in client) {
           return client.focus();
         }
       }
       if (clients.openWindow) {
-        return clients.openWindow('/StreetWearX/');
+        return clients.openWindow('/streetwear/');
       }
     })
   );
