@@ -1,0 +1,10 @@
+{
+"name":"StreetWearX - Tienda de Ropa Urbana",
+"short_name":"StreetWearX",
+"start_url":"./",
+"scope":"./",
+"display":"standalone",
+"background_color":"#ffffff",
+"theme_color":"#1a1a1a",
+"icons":[{"src":"favicon.png","sizes":"192x192","type":"image/png"}]
+}
