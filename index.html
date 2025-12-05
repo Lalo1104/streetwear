@@ -10,6 +10,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="StreetWearX">
     
+    <!-- Fuente graffiti BlowBrush -->
+<link href="https://fonts.cdnfonts.com/css/blowbrush" rel="stylesheet">
+    
     <title>StreetWearX - Tienda de Ropa Urbana</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -17,6 +20,89 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
+/* 🔥 BOTÓN GRAFFITI STREETWEARX CON SPRAY ANIMADO 🔥 */
+#installBtn {
+    display: none;
+    padding: 20px 40px;
+    font-size: 30px;
+    font-family: 'BlowBrush', sans-serif;
+    letter-spacing: 2px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 18px;
+    margin-top: 35px;
+
+    /* Fondo estilo graffiti */
+    background: linear-gradient(135deg, #ff0066, #ffcc00);
+
+    /* Glow tipo neón*/
+    box-shadow: 
+        0 0 12px #ff0066,
+        0 0 22px #ffcc00,
+        0 0 35px rgba(255,0,102,0.9);
+
+    position: relative;
+    overflow: visible;
+
+    /* Animación graffiti */
+    animation: graffitiPulse 1.8s infinite ease-in-out;
+}
+
+/* Pulso estilo bomb graffiti */
+@keyframes graffitiPulse {
+    0% { transform: scale(1); box-shadow: 0 0 15px #ff0066; }
+    50% { transform: scale(1.06); box-shadow: 0 0 40px #ffcc00; }
+    100% { transform: scale(1); box-shadow: 0 0 15px #ff0066; }
+}
+
+/* 🧨 Spray animado (aerosol real) */
+#installBtn::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: 140%;
+    height: 160%;
+    background: radial-gradient(circle, rgba(255,0,102,0.45) 0%, transparent 70%);
+    filter: blur(30px);
+    opacity: 0;
+    animation: spray 1.4s infinite ease-in-out;
+    pointer-events: none;
+}
+
+/* Movimiento del spray */
+@keyframes spray {
+    0% { opacity: 0.6; transform: rotate(0deg) scale(1); }
+    50% { opacity: 0.85; transform: rotate(8deg) scale(1.15); }
+    100% { opacity: 0.6; transform: rotate(0deg) scale(1); }
+}
+
+/* Goteo de pintura tipo graffiti */
+#installBtn::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    filter: blur(10px);
+}
+
+/* Hover */
+#installBtn:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow:
+        0 0 12px #ff0066,
+        0 0 24px #ffcc00,
+        0 0 40px rgba(255,0,102,1);
+}
+
+
+        
         * {
             margin: 0;
             padding: 0;
@@ -1311,6 +1397,7 @@
     </header>
 
     <!-- App Status (debug) -->
+    <button id="installBtn">🔥 Instalar StreetWearX</button>
     <div id="appStatus" style="width:100%; background:#111; color:#fff; padding:0.4rem 1rem; font-size:0.9rem; text-align:left;">Estado: iniciando...</div>
 
     <!-- Sidebar Menu -->
@@ -2762,6 +2849,36 @@
         });
     });
   }
+</script>
+    <script>
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+// Chrome detecta cuando la PWA es instalable
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-block';
+});
+
+// Cuando el usuario hace clic
+installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === 'accepted') {
+        installBtn.style.display = "none";
+    }
+
+    deferredPrompt = null;
+});
+
+// Si la PWA ya fue instalada
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = "none";
+});
 </script>
 </body>
 </html></body>
