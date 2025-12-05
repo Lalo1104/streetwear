@@ -2883,8 +2883,7 @@ async function loadProducts() {
 
         // Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
-        }
+navigator.serviceWorker.register('/streetwear/sw.js');        }
     </script>
     <script>
     let deferredPrompt = null;
