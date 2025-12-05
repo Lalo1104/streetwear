@@ -2,12 +2,14 @@
   "name": "StreetWearX - Tienda de Ropa Urbana",
   "short_name": "StreetWearX",
   "description": "PWA de StreetWearX: tienda de ropa urbana con modo cliente y administrador.",
+  
   "start_url": "/streetwear/",
   "scope": "/streetwear/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1a1a1a",
+  "theme_color": "#000000",
   "orientation": "portrait-primary",
+
   "icons": [
     {
       "src": "icons/icon-192.png",
