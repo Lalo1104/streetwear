@@ -2,7 +2,7 @@
   "name": "StreetWearX - Tienda de Ropa Urbana",
   "short_name": "StreetWearX",
   "description": "Tu tienda de ropa urbana favorita. Compra las mejores prendas de moda urbana",
-  "start_url": "/streetwear/index.html",
+  "start_url": "/streetwear/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
