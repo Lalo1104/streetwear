@@ -2021,96 +2021,90 @@ enableIndexedDbPersistence(db).catch((err) => {
                 showToast('Error: ' + error.message, 'error');
                 console.error('Error en addProduct:', error);
             }
+        
         };
 
-       // 🔥 Load Products with OFFLINE support offline
-        // =========================
-// IndexedDB para Offline
-// =========================
-let dbIDB;
-const request = indexedDB.open("StreetWearXDB", 1);
-
-request.onupgradeneeded = function (event) {
-  dbIDB = event.target.result;
-  if (!dbIDB.objectStoreNames.contains("products")) {
-    dbIDB.createObjectStore("products", { keyPath: "id" });
-  }
-};
-
-request.onsuccess = function (event) {
-  dbIDB = event.target.result;
-};
-
-function saveProductsToIDB(products) {
-  return new Promise((resolve) => {
-    const tx = dbIDB.transaction("products", "readwrite");
-    const store = tx.objectStore("products");
-
-    store.clear();
-    products.forEach((p) => store.put(p));
-
-    tx.oncomplete = resolve;
-  });
-}
-
-function getProductsFromIDB() {
-  return new Promise((resolve) => {
-    const tx = dbIDB.transaction("products", "readonly");
-    const store = tx.objectStore("products");
-
-    const req = store.getAll();
-    req.onsuccess = () => resolve(req.result);
-  });
-}
+// 🔥 Load Products con soporte OFFLINE
 async function loadProducts() {
-  const status = document.getElementById("appStatus");
-  if (status) status.textContent = "Cargando productos...";
+  const s = document.getElementById('appStatus');
+  if (s) s.textContent = 'Cargando productos...';
 
   try {
-    // 1. Intentar traer desde FIREBASE
-    const querySnapshot = await getDocs(collection(db, "products"));
-    const productsOnline = [];
+    // 1. Intentar obtener productos desde Firebase
+    const querySnapshot = await getDocs(collection(db, 'products'));
+    window.allProducts = [];
 
     querySnapshot.forEach((doc) => {
-      productsOnline.push({ id: doc.id, ...doc.data() });
+      window.allProducts.push({
+        id: doc.id,
+        ...doc.data()
+      });
     });
 
-    // 2. Guardar en IndexedDB para modo offline
-    await saveProductsToIDB(productsOnline);
+    // 2. Guardar productos localmente para uso offline
+    await saveProductsToIDB(window.allProducts);
+    console.log("Productos cargados de Firebase y guardados en IndexedDB");
 
-    window.allProducts = productsOnline;
-    window.filteredProducts = productsOnline;
-
-    if (status) status.textContent = "Productos cargados (online)";
+    if (s) s.textContent = 'Productos cargados (online)';
   } catch (error) {
+    console.warn('⚠ No hay conexión o fallo Firebase, cargando desde IndexedDB...', error);
 
-    // 3. Si falla (no hay internet) → cargar desde IndexedDB
-    console.warn("⚠ No hay internet, cargando productos offline...");
+    const localProducts = await getProductsFromIDB();
 
-    const offlineProducts = await getProductsFromIDB();
-
-    window.allProducts = offlineProducts;
-    window.filteredProducts = offlineProducts;
-
-    if (status) status.textContent = "Modo offline (productos locales)";
+    if (localProducts && localProducts.length > 0) {
+      window.allProducts = localProducts;
+      if (s) s.textContent = 'Productos cargados en modo offline';
+    } else {
+      console.error('No hay productos guardados offline');
+      if (s) s.textContent = 'No se pudieron cargar productos.';
+      window.allProducts = [];
+    }
   }
 
-  // 4. Mostrar productos en pantalla
+  window.filteredProducts = window.allProducts;
   renderProducts(window.filteredProducts);
 }
-                // reset any subcategory filter when reloading
-                window.currentSubcategoryFilter = '';
-                displayProducts(window.filteredProducts);
-                renderCarousel();
-                const s2 = document.getElementById('appStatus'); if (s2) s2.textContent = 'Productos cargados: ' + window.allProducts.length;
-                // Update admin list if open
-                if (window.isAdmin) await loadAdminProducts();
-            } catch (error) {
-                console.error('Error cargando productos:', error);
-                showToast('Error al cargar productos', 'error');
-                const s3 = document.getElementById('appStatus'); if (s3) s3.textContent = 'Error cargando productos: ' + (error.message || error);
-            }
-        }
+
+    // 2. Guardar en IndexedDB para uso OFFLINE
+    try {
+      await saveProductsToIDB(window.allProducts);
+      console.log('Productos guardados en IndexedDB');
+    } catch (e) {
+      console.warn('No se pudieron guardar productos en IndexedDB', e);
+    }
+
+    if (s) s.textContent = 'Productos cargados (online)';
+  } catch (error) {
+    console.warn('⚠ No hay conexión o fallo Firebase, cargando desde IndexedDB...', error);
+
+    const localProducts = await getProductsFromIDB();
+
+    if (localProducts && localProducts.length > 0) {
+      window.allProducts = localProducts;
+      if (s) s.textContent = 'Productos cargados en modo offline';
+    } else {
+      console.error('No hay productos guardados offline');
+      window.allProducts = [];
+      if (s) s.textContent = 'No se pudieron cargar productos.';
+    }
+  }
+
+  // 3. Actualizar filtros y UI (igual que antes)
+  window.filteredProducts = window.allProducts;
+  window.currentSubcategoryFilter = '';
+
+  // Usa las mismas funciones que ya tienes en el proyecto
+  displayProducts(window.filteredProducts);
+  renderCarousel();
+
+  const s2 = document.getElementById('appStatus');
+  if (s2) s2.textContent = 'Productos cargados: ' + window.allProducts.length;
+
+  // 4. Si el usuario logueado es admin, recargar la lista del panel admin
+  if (window.isAdmin) {
+    await loadAdminProducts();
+  }
+}
 
         // Render previews when files are selected in the admin form
         const productImagesInput = document.getElementById('productImages');
