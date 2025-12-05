@@ -1492,6 +1492,16 @@ header {
 <body>
     <!-- Header -->
     <header>
+
+        <div class="hero-banner">
+    <div class="hero-banner-content">
+        <h1>StreetWearX</h1>
+        <p>Moda urbana — estilo que rompe límites</p>
+        <button class="btn-hero" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
+            Ver Colección
+        </button>
+    </div>
+</div>
         <a href="#" class="logo">StreetWearX</a>
         <div class="header-icons">
             <button class="icon-btn" id="searchBtn" title="Buscar">🔍</button>
@@ -1806,7 +1816,31 @@ header {
             </select>
             <input type="text" id="searchInput" placeholder="Buscar productos..." onkeyup="applyFilters()" style="padding: 0.75rem; border: 1px solid var(--border); border-radius: 0; flex: 1; max-width: 300px;">
         </div>
+<section class="category-section">
+    <h2 class="category-title">Explora por categoría</h2>
 
+    <div class="category-grid">
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900" />
+            <h3>Hombres</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1562156720-4f37a2c33a37?w=900" />
+            <h3>Mujeres</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?w=900" />
+            <h3>Unisex</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1600185365483-26d7a4d95a31?w=900" />
+            <h3>Accesorios</h3>
+        </div>
+    </div>
+</section>
         <div id="productsSection" class="products-grid" style="padding: 0 2rem;">
             <div class="loading">
                 <div class="spinner"></div>
