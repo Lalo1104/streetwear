@@ -1720,8 +1720,16 @@
         // Reemplaza con tu configuración de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, getDoc, query, where, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
+      import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDocsFromCache,
+  addDoc,
+  deleteDoc,
+  doc,
+  enableIndexedDbPersistence
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
         // CONFIGURACIÓN DE FIREBASE - REEMPLAZA CON TUS CREDENCIALES
         const firebaseConfig = {
             apiKey: "AIzaSyB-Ag7WIUBcGgJPBg6taUqtGVHgWAwekhY",
@@ -1742,7 +1750,10 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
+// 🔥 Activar modo offline de Firestore (admin + clientes)
+enableIndexedDbPersistence(db).catch((err) => {
+  console.warn('No se pudo activar la persistencia offline de Firestore:', err.code || err);
+});
         // Variables Globales
         window.currentUser = null;
         window.isAdmin = false;
@@ -2012,19 +2023,43 @@
             }
         };
 
-        // Load Products from Firestore
-        async function loadProducts() {
-            try {
-                const s = document.getElementById('appStatus'); if (s) s.textContent = 'Cargando productos...';
-                const querySnapshot = await getDocs(collection(db, 'products'));
-                window.allProducts = [];
-                querySnapshot.forEach((doc) => {
-                    window.allProducts.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                window.filteredProducts = window.allProducts;
+       // 🔥 Load Products with OFFLINE support
+async function loadProducts() {
+  const status = document.getElementById("appStatus");
+  if (status) status.textContent = "Cargando productos...";
+
+  try {
+    // 1. Intentar traer desde FIREBASE
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const productsOnline = [];
+
+    querySnapshot.forEach((doc) => {
+      productsOnline.push({ id: doc.id, ...doc.data() });
+    });
+
+    // 2. Guardar en IndexedDB para modo offline
+    await saveProductsToIDB(productsOnline);
+
+    window.allProducts = productsOnline;
+    window.filteredProducts = productsOnline;
+
+    if (status) status.textContent = "Productos cargados (online)";
+  } catch (error) {
+
+    // 3. Si falla (no hay internet) → cargar desde IndexedDB
+    console.warn("⚠ No hay internet, cargando productos offline...");
+
+    const offlineProducts = await getProductsFromIDB();
+
+    window.allProducts = offlineProducts;
+    window.filteredProducts = offlineProducts;
+
+    if (status) status.textContent = "Modo offline (productos locales)";
+  }
+
+  // 4. Mostrar productos en pantalla
+  renderProducts(window.filteredProducts);
+}
                 // reset any subcategory filter when reloading
                 window.currentSubcategoryFilter = '';
                 displayProducts(window.filteredProducts);
