@@ -3,10 +3,10 @@ const CACHE_VERSION = 'v2';
 const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
 
 const urlsToCache = [
-  '/streetwear/',
-  '/streetwear/index.html',
-  '/streetwear/manifest.json',
-  '/streetwear/favicon.png'
+  '/StreetWearX/',
+  '/StreetWearX/index.html',
+  '/StreetWearX/manifest.json',
+  '/StreetWearX/favicon.png'
 ];
 
 // Instalación del Service Worker
@@ -89,7 +89,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           // fallback a la página principal offline
-          return caches.match('/streetwear/index.html');
+          return caches.match('/StreetWearX/index.html');
         });
     })
   );
@@ -100,8 +100,8 @@ self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
   const options = {
     body: data.body || 'Nueva notificación de StreetWearX',
-    icon: '/streetwear/favicon.png',
-    badge: '/streetwear/favicon.png',
+    icon: '/StreetWearX/favicon.png',
+    badge: '/StreetWearX/favicon.png',
     tag: 'streetwearx',
     requireInteraction: false
   };
@@ -117,12 +117,12 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then((clientList) => {
       for (let client of clientList) {
-        if (client.url.includes('/streetwear/') && 'focus' in client) {
+        if (client.url.includes('/StreetWearX/') && 'focus' in client) {
           return client.focus();
         }
       }
       if (clients.openWindow) {
-        return clients.openWindow('/streetwear/');
+        return clients.openWindow('/StreetWearX/');
       }
     })
   );
