@@ -1,138 +1,95 @@
-// Service Worker avanzado para StreetWearX PWA
-const CACHE_VERSION = 'v3';
+// Service Worker para StreetWearX PWA con soporte OFFLINE de productos
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
-const BASE_PATH = '/streetwear';
 
-// Archivos esenciales para que la app siempre cargue offline
 const urlsToCache = [
-  `${BASE_PATH}/`,
-  `${BASE_PATH}/index.html`,
-  `${BASE_PATH}/manifest.json`,
-  `${BASE_PATH}/favicon.png`
+  '/streetwear/',
+  '/streetwear/index.html',
+  '/streetwear/manifest.json',
+  '/streetwear/favicon.png'
 ];
 
-// Instalación
+// Instalación del Service Worker
 self.addEventListener('install', (event) => {
-  console.log('[SW] Instalando…');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Cache abierto:', CACHE_NAME);
+      console.log('Cache abierto:', CACHE_NAME);
       return cache.addAll(urlsToCache).catch(err => {
-        console.log('[SW] Error al cachear archivos iniciales:', err);
+        console.log('Error al cachear archivos:', err);
       });
     })
   );
   self.skipWaiting();
 });
 
-// Activación
+// Activación del Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activando…');
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('[SW] Eliminando cache antiguo:', cacheName);
+            console.log('Eliminando cache antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
-      )
-    )
+      );
+    })
   );
   self.clients.claim();
 });
 
-// FETCH: navegación, APIs y estáticos
+// Estrategia Network First para Firebase / Cloudinary / APIs
 self.addEventListener('fetch', (event) => {
-  const req = event.request;
+  if (event.request.method !== 'GET') return;
 
-  if (req.method !== 'GET') return;
+  const url = event.request.url;
 
-  const url = new URL(req.url);
-
-  // 1) Navegación (HTML) → Network First, fallback a index.html
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req)
-        .then((networkRes) => {
-          if (networkRes && networkRes.status === 200) {
-            const resClone = networkRes.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(req, resClone);
-            });
-          }
-          return networkRes;
-        })
-        .catch(() => {
-          return caches.match(`${BASE_PATH}/index.html`)
-            .then((cachedRes) =>
-              cachedRes || new Response('Offline - No se pudo cargar la app', { status: 503 })
-            );
-        })
-    );
-    return;
-  }
-
-  // 2) Firebase / Google APIs / Cloudinary → Network First con fallback a cache
+  // Firebase, Google APIs, Cloudinary → siempre intentar red primero
   if (
-    url.hostname.includes('firebase') ||
-    url.hostname.includes('googleapis.com') ||
-    url.hostname.includes('cloudinary')
+    url.includes('firebase') ||
+    url.includes('googleapis.com') ||
+    url.includes('cloudinary')
   ) {
     event.respondWith(
-      fetch(req)
-        .then((networkRes) => {
-          if (!networkRes || networkRes.status !== 200) {
-            return networkRes;
+      fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type === 'opaque') {
+            return response;
           }
-          const resClone = networkRes.clone();
+          const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(req, resClone);
+            cache.put(event.request, responseToCache);
           });
-          return networkRes;
+          return response;
         })
         .catch(() => {
-          return caches.match(req)
-            .then((cachedRes) =>
-              cachedRes || new Response('Offline - Datos no disponibles', { status: 503 })
-            );
+          return caches.match(event.request)
+            .then((response) => response || new Response('Offline - No disponible'));
         })
     );
     return;
   }
 
-  // 3) Estáticos (CSS, JS, imágenes…) → Cache First con actualización en segundo plano
+  // Resto de recursos → Cache First
   event.respondWith(
-    caches.match(req).then((cachedRes) => {
-      if (cachedRes) {
-        // Actualiza en segundo plano si hay red
-        fetch(req)
-          .then((networkRes) => {
-            if (!networkRes || networkRes.status !== 200) return;
-            const resClone = networkRes.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(req, resClone);
-            });
-          })
-          .catch(() => {});
-        return cachedRes;
-      }
+    caches.match(event.request).then((response) => {
+      if (response) return response;
 
-      // No estaba en cache → intenta red y cachea
-      return fetch(req)
-        .then((networkRes) => {
-          if (!networkRes || networkRes.status !== 200) {
-            return networkRes;
+      return fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type === 'opaque') {
+            return response;
           }
-          const resClone = networkRes.clone();
+          const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(req, resClone);
+            cache.put(event.request, responseToCache);
           });
-          return networkRes;
+          return response;
         })
         .catch(() => {
-          return new Response('Offline - Recurso no disponible', { status: 503 });
+          // fallback a la página principal offline
+          return caches.match('/streetwear/index.html');
         });
     })
   );
@@ -143,8 +100,8 @@ self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
   const options = {
     body: data.body || 'Nueva notificación de StreetWearX',
-    icon: `${BASE_PATH}/favicon.png`,
-    badge: `${BASE_PATH}/favicon.png`,
+    icon: '/streetwear/favicon.png',
+    badge: '/streetwear/favicon.png',
     tag: 'streetwearx',
     requireInteraction: false
   };
@@ -160,12 +117,12 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then((clientList) => {
       for (let client of clientList) {
-        if (client.url.includes(`${BASE_PATH}/`) && 'focus' in client) {
+        if (client.url.includes('/streetwear/') && 'focus' in client) {
           return client.focus();
         }
       }
       if (clients.openWindow) {
-        return clients.openWindow(`${BASE_PATH}/`);
+        return clients.openWindow('/streetwear/');
       }
     })
   );
