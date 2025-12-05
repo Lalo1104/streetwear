@@ -1754,7 +1754,7 @@
 // IndexedDB para modo OFFLINE
 // =========================
 let dbIDB;
-const request = indexedDB.open("StreetWearXDB", 1);
+const request = indexedDB.open("streetwearXDB", 1);
 
 request.onupgradeneeded = function (event) {
   dbIDB = event.target.result;
@@ -1895,8 +1895,8 @@ enableIndexedDbPersistence(db).catch((err) => {
             const name = (document.getElementById('adminName')) ? document.getElementById('adminName').value.trim() : '';
             const password = document.getElementById('adminPassword').value;
 
-            // Admin password must be exactly 'Streetwear'
-            if (password === 'Streetwear') {
+            // Admin password must be exactly 'streetwear'
+            if (password === 'streetwear') {
                 window.isAdmin = true;
                 window.currentUser = { name: name || 'Administrador', uid: 'local-admin', role: 'admin' };
                 document.getElementById('userBtn').textContent = 'ADM';
@@ -2721,7 +2721,7 @@ async function loadProducts() {
             if (mode === 'admin') {
                 // Ask for admin password
                 const pwd = prompt('Ingresa la contraseña de administrador:');
-                if (pwd === 'Streetwear') {
+                if (pwd === 'streetwear') {
                     window.isAdmin = true;
                     window.currentUser = window.currentUser || { name: 'Administrador', uid: 'local-admin', role: 'admin' };
                     updateUIForRole();
