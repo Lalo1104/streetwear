@@ -2023,7 +2023,45 @@ enableIndexedDbPersistence(db).catch((err) => {
             }
         };
 
-       // 🔥 Load Products with OFFLINE support
+       // 🔥 Load Products with OFFLINE support offline
+        // =========================
+// IndexedDB para Offline
+// =========================
+let dbIDB;
+const request = indexedDB.open("StreetWearXDB", 1);
+
+request.onupgradeneeded = function (event) {
+  dbIDB = event.target.result;
+  if (!dbIDB.objectStoreNames.contains("products")) {
+    dbIDB.createObjectStore("products", { keyPath: "id" });
+  }
+};
+
+request.onsuccess = function (event) {
+  dbIDB = event.target.result;
+};
+
+function saveProductsToIDB(products) {
+  return new Promise((resolve) => {
+    const tx = dbIDB.transaction("products", "readwrite");
+    const store = tx.objectStore("products");
+
+    store.clear();
+    products.forEach((p) => store.put(p));
+
+    tx.oncomplete = resolve;
+  });
+}
+
+function getProductsFromIDB() {
+  return new Promise((resolve) => {
+    const tx = dbIDB.transaction("products", "readonly");
+    const store = tx.objectStore("products");
+
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result);
+  });
+}
 async function loadProducts() {
   const status = document.getElementById("appStatus");
   if (status) status.textContent = "Cargando productos...";
