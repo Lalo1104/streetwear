@@ -178,6 +178,221 @@
             h2 { font-size: 18px; }
             #installBtn { font-size: 24px; padding: 16px 28px; }
         }
+/* ==== TEMA STREETWEAR URBANO (OVERRIDE) ==== */
+
+:root {
+    --primary: #ff0066;      /* Rosa neón */
+    --secondary: #000000;    /* Negro profundo */
+    --accent: #ffcc00;       /* Amarillo neón */
+    --light: #111111;
+    --text: #f5f5f5;
+    --border: #242424;
+    --gray: #888888;
+}
+
+/* Fondo general */
+body {
+    background: radial-gradient(circle at top, #1b1b1b 0%, #000000 50%, #050505 100%);
+    color: var(--text);
+}
+
+/* Header más urbano */
+header {
+    background: rgba(0, 0, 0, 0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+}
+
+/* Logo estilo marca urbana */
+.logo {
+    font-family: 'BlowBrush', 'Poppins', sans-serif;
+    font-size: 1.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(120deg, #ffcc00, #ff0066);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Iconos del header */
+.icon-btn {
+    color: #f5f5f5;
+}
+
+.icon-btn:hover {
+    color: #ffcc00;
+}
+
+/* Hero / banner principal */
+.hero {
+    background: linear-gradient(180deg, rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+                url('https://images.unsplash.com/photo-1514996937319-344454492b37?w=1400&fit=crop') center/cover;
+    border-radius: 0;
+    margin: 0;
+    padding: 5rem 2rem;
+}
+
+.hero h1 {
+    font-family: 'BlowBrush', 'Poppins', sans-serif;
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #ffcc00;
+    text-shadow: 0 0 18px rgba(255,204,0,0.65);
+}
+
+.hero p {
+    color: #f2f2f2;
+    max-width: 520px;
+}
+
+/* Botón principal en hero */
+.hero .btn-primary {
+    background: linear-gradient(120deg, #ff0066, #ffcc00);
+    border-radius: 999px;
+    border: none;
+    box-shadow: 0 0 18px rgba(255,0,102,0.7);
+}
+.hero .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(255,204,0,0.8);
+}
+
+/* Sección de filtros */
+.filter-section {
+    background: rgba(0,0,0,0.85);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 14px;
+    margin: 1.5rem;
+}
+
+/* Cards de productos street */
+.products-grid {
+    padding: 1.5rem 1rem;
+}
+.product-card {
+    background: radial-gradient(circle at top, #1b1b1b 0%, #050505 60%, #000000 100%);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+}
+.product-name {
+    color: #ffffff;
+}
+.product-category {
+    color: #bbbbbb;
+}
+.product-price {
+    color: #ffcc00;
+}
+.btn-add-cart {
+    background: linear-gradient(120deg, #ff0066, #ffcc00);
+    border-radius: 999px;
+    border: none;
+}
+.btn-add-cart:hover {
+    filter: brightness(1.1);
+}
+
+/* Modal del carrito */
+.cart-modal {
+    background: radial-gradient(circle at top, #141414 0%, #000000 60%, #050505 100%);
+}
+
+/* Panel admin con fondo oscuro */
+.admin-content {
+    background: radial-gradient(circle at top, #151515 0%, #050505 70%);
+    color: #f5f5f5;
+}
+
+/* ==== BOTÓN GRAFFITI CON SPRAY ANIMADO (PWA) ==== */
+
+#installBtn {
+    display: none;
+    padding: 20px 40px;
+    font-size: 28px;
+    font-family: 'BlowBrush', sans-serif;
+    letter-spacing: 2px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 18px;
+    margin-top: 35px;
+
+    background: linear-gradient(135deg, #ff0066, #ffcc00);
+
+    box-shadow:
+        0 0 12px #ff0066,
+        0 0 22px #ffcc00,
+        0 0 35px rgba(255,0,102,0.9);
+
+    position: relative;
+    overflow: visible;
+    animation: graffitiPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes graffitiPulse {
+    0% { transform: scale(1); box-shadow: 0 0 15px #ff0066; }
+    50% { transform: scale(1.06); box-shadow: 0 0 40px #ffcc00; }
+    100% { transform: scale(1); box-shadow: 0 0 15px #ff0066; }
+}
+
+/* Spray animado */
+#installBtn::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: 140%;
+    height: 160%;
+    background: radial-gradient(circle, rgba(255,0,102,0.45) 0%, transparent 70%);
+    filter: blur(30px);
+    opacity: 0;
+    animation: spray 1.4s infinite ease-in-out;
+    pointer-events: none;
+}
+@keyframes spray {
+    0% { opacity: 0.6; transform: rotate(0deg) scale(1); }
+    50% { opacity: 0.85; transform: rotate(8deg) scale(1.15); }
+    100% { opacity: 0.6; transform: rotate(0deg) scale(1); }
+}
+
+/* Goteo tipo pintura */
+#installBtn::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    filter: blur(10px);
+}
+
+#installBtn:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow:
+        0 0 12px #ff0066,
+        0 0 24px #ffcc00,
+        0 0 40px rgba(255,0,102,1);
+}
+
+/* Mobile tweaks extra */
+@media (max-width: 600px) {
+    .hero {
+        padding: 3rem 1.2rem;
+    }
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    #installBtn {
+        font-size: 22px;
+        padding: 14px 24px;
+    }
+}
+        
     </style>
 </head>
 
