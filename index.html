@@ -2888,15 +2888,22 @@ async function loadProducts() {
 
         
 
-        // Cargar productos al iniciar
-        loadProducts();
-        updateCartUI();
+      // Cargar productos al iniciar
+    loadProducts();
+    updateCartUI();
 
-        // Service Worker
-        if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('/streetwear/sw.js');        }
-    </script>
-    <script>
+    // Service Worker (registro relativo a la carpeta actual)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => {
+                console.log('SW registrado ✅', reg.scope);
+            })
+            .catch(err => {
+                console.error('Error al registrar el SW ❌', err);
+            });
+    }
+</script>
+<script>
     let deferredPrompt = null;
 
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -2915,20 +2922,6 @@ navigator.serviceWorker.register('/streetwear/sw.js');        }
         document.getElementById('pwaInstallBtn').style.display = 'none';
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
-
-    window.addEventListener('appinstalled', () => {
-        document.getElementById('pwaInstallBtn').style.display = 'none';
-        document.getElementById('pwaInstalledLabel').style.display = 'inline';
-    });
-</script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/streetwear/sw.js')
-        .then(reg => console.log('SW registrado ✅', reg.scope))
-        .catch(err => console.error('Error registrando SW ❌', err));
-    });
-  }
 </script>
 </body>
 </html>
