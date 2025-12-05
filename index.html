@@ -1356,7 +1356,137 @@
     color: #00e676;
     text-shadow: 0 0 6px rgba(0,0,0,0.7);
 }
-        
+     /* ======= ESTILO MEJORADO PARA TU PÁGINA ======= */
+
+/* Fondo general con textura suave */
+body {
+    background: linear-gradient(180deg, #111111, #1b1b1b, #2a2a2a);
+}
+
+/* Header con brillo */
+header {
+    background: rgba(0,0,0,0.75) !important;
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Logo más llamativo */
+.logo {
+    font-size: 2rem;
+    background: linear-gradient(90deg, #ff0033, #ff8800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ====== BANNER PRINCIPAL ====== */
+
+.hero-banner {
+    width: 100%;
+    height: 55vh;
+    background: url("https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1600&q=80") center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.hero-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+}
+
+.hero-banner-content {
+    position: relative;
+    z-index: 5;
+    color: #fff;
+}
+
+.hero-banner-content h1 {
+    font-size: 3.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.hero-banner-content p {
+    font-size: 1.3rem;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+.btn-hero {
+    margin-top: 1.5rem;
+    padding: 0.9rem 2.2rem;
+    background: linear-gradient(90deg, #ff0033, #ff7700);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-hero:hover {
+    transform: scale(1.05);
+}
+
+/* ====== SECCIÓN DE CATEGORÍAS ====== */
+
+.category-section {
+    max-width: 1300px;
+    margin: 0 auto 3rem auto;
+    padding: 1rem 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.category-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ff0033, #ff8800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.4rem;
+}
+
+.category-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 1.2rem;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+    border-color: #ff8800;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.category-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.category-card h3 {
+    margin-top: 0.6rem;
+    color: #fff;
+    font-size: 1.1rem;
+}   
     </style>
 </head>
 <body>
