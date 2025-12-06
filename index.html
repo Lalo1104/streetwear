@@ -4094,6 +4094,10 @@ function openProduct(product) {
     saveRecentProduct(product); // 🔥 guardar en historial
     showProductModal(product);  // tu función actual
 }
+        function closeProductModal() {
+    document.getElementById("productModal").style.display = "none";
+    document.body.style.overflow = "auto"; // permite scroll de nuevo
+}
 </script>
 </body>
 </html>
