@@ -1489,6 +1489,35 @@ header {
     color: #fff;
     font-size: 1.1rem;
 }   
+        /* ===== STICKY + SHRINK HERO BANNER ===== */
+
+.hero-banner {
+    position: fixed;
+    top: 80px;              /* espacio para el header */
+    left: 0;
+    width: 100%;
+    height: 35vh;          /* altura inicial */
+    transition: height 0.35s ease-out, opacity 0.35s ease-out;
+    z-index: 20;
+    overflow: hidden;
+}
+
+.hero-banner.shrink {
+    height: 15vh;          /* altura al hacer scroll */
+    opacity: 0.9;          /* se hace un poquito más translúcido */
+}
+
+.hero-banner-content h1 {
+    transition: font-size 0.3s ease-out;
+}
+
+.hero-banner.shrink .hero-banner-content h1 {
+    font-size: 1.8rem;     /* título más pequeño al hacer scroll */
+}
+
+.hero-banner.shrink .hero-banner-content p {
+    font-size: 0.85rem;
+}
     </style>
 </head>
 <body>
@@ -3009,6 +3038,17 @@ header {
         document.getElementById('pwaInstallBtn').style.display = 'none';
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
+</script>
+    <script>
+document.addEventListener("scroll", () => {
+    const banner = document.querySelector(".hero-banner");
+    
+    if (window.scrollY > 120) { 
+        banner.classList.add("shrink");
+    } else {
+        banner.classList.remove("shrink");
+    }
+});
 </script>
 </body>
 </html>
