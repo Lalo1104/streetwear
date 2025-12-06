@@ -1,11 +1,11 @@
 {
-  "name": "StreetWearX - Tienda Urbana",
+  "name": "StreetWearX",
   "short_name": "StreetWearX",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
   "theme_color": "#000000",
-  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "favicon.png",
