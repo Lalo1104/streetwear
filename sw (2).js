@@ -1,36 +1,36 @@
-// Service Worker para StreetWearX PWA
-const CACHE_VERSION = 'v2';
-const CACHE_NAME = `streetwearx-${CACHE_VERSION}`;
+// StreetWearX - Service Worker
+const CACHE_NAME = "streetwearx-cache-v1";
 
-const urlsToCache = [
-  '/streetwear/',
-  '/streetwear/index.html',
-  '/streetwear/manifest.json',
-  '/streetwear/favicon.png'
+// Archivos esenciales para offline
+const FILES_TO_CACHE = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./favicon.png"
 ];
 
-// Instalación del Service Worker
-self.addEventListener('install', (event) => {
+// INSTALACIÓN
+self.addEventListener("install", event => {
+  console.log("[SW] Instalando Service Worker...");
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Cache abierto:', CACHE_NAME);
-      return cache.addAll(urlsToCache).catch(err => {
-        console.log('Error al cachear archivos:', err);
-      });
+    caches.open(CACHE_NAME).then(cache => {
+      console.log("[SW] Cacheando archivos iniciales...");
+      return cache.addAll(FILES_TO_CACHE);
     })
   );
   self.skipWaiting();
 });
 
-// Activación del Service Worker
-self.addEventListener('activate', (event) => {
+// ACTIVACIÓN
+self.addEventListener("activate", event => {
+  console.log("[SW] Activando Service Worker...");
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(keys => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Eliminando cache antiguo:', cacheName);
-            return caches.delete(cacheName);
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            console.log("[SW] Eliminando cache viejo:", key);
+            return caches.delete(key);
           }
         })
       );
@@ -39,91 +39,25 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Estrategia Network First para Firebase / Cloudinary / APIs
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+// FETCH (modo offline seguro sin afectar Firebase)
+self.addEventListener("fetch", event => {
+  const req = event.request;
 
-  const url = event.request.url;
-
-  // Firebase, Google APIs, Cloudinary → siempre intentar red primero
+  // No cacheamos llamadas dinámicas a Firebase o Cloudinary
   if (
-    url.includes('firebase') ||
-    url.includes('googleapis.com') ||
-    url.includes('cloudinary')
+    req.url.includes("firebasestorage") ||
+    req.url.includes("firebase") ||
+    req.url.includes("cloudinary")
   ) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type === 'opaque') {
-            return response;
-          }
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-          return response;
-        })
-        .catch(() => {
-          return caches.match(event.request)
-            .then((response) => response || new Response('Offline - No disponible'));
-        })
-    );
     return;
   }
 
-  // Resto de recursos → Cache First
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) return response;
-
-      return fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type === 'opaque') {
-            return response;
-          }
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-          return response;
-        })
-        .catch(() => {
-          // fallback a la página principal offline
-          return caches.match('/streetwear/index.html');
-        });
-    })
-  );
-});
-
-// Push Notifications (opcional)
-self.addEventListener('push', (event) => {
-  const data = event.data ? event.data.json() : {};
-  const options = {
-    body: data.body || 'Nueva notificación de StreetWearX',
-    icon: '/streetwear/favicon.png',
-    badge: '/streetwear/favicon.png',
-    tag: 'streetwearx',
-    requireInteraction: false
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(data.title || 'StreetWearX', options)
-  );
-});
-
-// Click en notificación
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((clientList) => {
-      for (let client of clientList) {
-        if (client.url.includes('/streetwear/') && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow('/streetwear/');
-      }
+    caches.match(req).then(cached => {
+      return (
+        cached ||
+        fetch(req).catch(() => caches.match("./index.html"))
+      );
     })
   );
 });
