@@ -3894,7 +3894,6 @@ if (document.getElementById("modalAddCartBtn")) {
 }
     </script>
     <script>
-        let currentReviewProduct = null;
         let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -3941,6 +3940,7 @@ document.addEventListener("scroll", () => {
 });
 </script>
     <script>
+  let currentReviewProduct = null;
 document.addEventListener("scroll", () => {
     const banner = document.querySelector(".hero-banner");
 
