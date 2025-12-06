@@ -2234,6 +2234,12 @@ main {
     max-height: none;
   }
 }
+        // === AGREGAR PRODUCTO DESDE EL MODAL ===
+if (document.getElementById("modalAddCartBtn")) {
+    document.getElementById("modalAddCartBtn").onclick = function () {
+        addToCart(currentReviewProduct);
+    };
+}
     </style>
 </head>
 <body>
