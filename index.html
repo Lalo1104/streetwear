@@ -1518,6 +1518,27 @@ header {
 .hero-banner.shrink .hero-banner-content p {
     font-size: 0.85rem;
 }
+
+        .logo-img {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+}
+
+.hero-logo {
+    width: 120px;
+    max-width: 90%;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+}
+        .hero-logo {
+    width: 120px;   /* tamaño dentro del banner */
+    max-width: 90%;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+}
     </style>
 </head>
 <body>
@@ -1526,14 +1547,16 @@ header {
 
         <div class="hero-banner">
     <div class="hero-banner-content">
-        <h1>StreetWearX</h1>
+<img src="favicon.png" alt="Logo" class="hero-logo">
         <p>Moda urbana — estilo que rompe límites</p>
         <button class="btn-hero" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
             Ver Colección
         </button>
     </div>
 </div>
-        <a href="#" class="logo">StreetWearX</a>
+      <a href="#" class="logo">
+    <img src="favicon.png" alt="Logo" class="logo-img">
+</a>
         <div class="header-icons">
             <button class="icon-btn" id="searchBtn" title="Buscar">🔍</button>
             <button class="icon-btn" id="cartBtn" title="Carrito">
