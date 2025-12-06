@@ -2546,6 +2546,10 @@ main {
         <input id="reviewUsername" type="text" placeholder="Tu nombre (opcional)"
                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
 
+        <button onclick="submitReview()" 
+        style="width:100%; padding:12px; background:#111; color:white; border:none; border-radius:8px; font-weight:bold;">
+    Enviar reseña
+</button>
         <textarea id="reviewComment" placeholder="Escribe tu opinión..."
                   style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
         </textarea>
@@ -3821,7 +3825,87 @@ function openProduct(product) {
     saveRecentProduct(product); // 🔥 guardar en historial
     showProductModal(product);  // tu función actual
 }
+// ============================================================
+// 🔥 SISTEMA COMPLETO DE RESEÑAS – LOCALSTORAGE
+// ============================================================
 
+let currentReviewProduct = null;
+
+/* 1. Guardar reseña */
+function saveReview(productId, username, rating, comment) {
+    let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
+
+    if (!reviews[productId]) reviews[productId] = [];
+
+    reviews[productId].push({
+        username,
+        rating: parseInt(rating),
+        comment,
+        date: new Date().toLocaleDateString()
+    });
+
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+}
+
+/* 2. Cargar reseñas */
+function loadReviews(productId) {
+    let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
+    return reviews[productId] || [];
+}
+
+/* 3. Mostrar reseñas */
+function renderReviews(productId) {
+    const container = document.getElementById("reviewsContainer");
+    const reviews = loadReviews(productId);
+
+    container.innerHTML = "";
+
+    if (reviews.length === 0) {
+        container.innerHTML = "<p style='color:#777;'>No hay reseñas aún.</p>";
+        return;
+    }
+
+    reviews.forEach(r => {
+        container.innerHTML += `
+            <div style="background:#f7f7f7; padding:10px; border-radius:8px; margin-bottom:10px;">
+                <div style="font-size:1.2rem;">⭐ ${r.rating}</div>
+                <strong>${r.username}</strong><br>
+                <p>${r.comment}</p>
+                <small style="color:#777;">${r.date}</small>
+            </div>
+        `;
+    });
+}
+
+/* 4. Enviar reseña */
+function submitReview() {
+    const rating = document.getElementById("reviewRating").value;
+    const username = document.getElementById("reviewUsername").value || "Anónimo";
+    const comment = document.getElementById("reviewComment").value;
+
+    if (comment.trim() === "") {
+        alert("Escribe un comentario.");
+        return;
+    }
+
+    saveReview(currentReviewProduct.id, username, rating, comment);
+
+    renderReviews(currentReviewProduct.id);
+
+    document.getElementById("reviewComment").value = "";
+    document.getElementById("reviewUsername").value = "";
+}
+
+/* 5. Intercepta showProductModal para cargar las reseñas automáticamente */
+const originalShowProductModal = showProductModal;
+
+showProductModal = function(product) {
+    currentReviewProduct = product;
+
+    originalShowProductModal(product); // Abre el modal normal
+
+    renderReviews(product.id); // Cargar reseñas dentro del modal
+};
 
 /* -------------------------------
    5) CUANDO AGREGAS UN PRODUCTO AL CARRITO
