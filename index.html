@@ -2123,6 +2123,117 @@ main {
         font-size: 1rem !important;
     }
 }
+ /* 🔧 Forzar 2 productos por fila en celular */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}    
+        /* 🔧 Layout del modal de producto */
+.product-modal {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  max-width: 900px;
+  width: 95%;
+}
+
+.product-modal-left,
+.product-modal-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-modal-left #productMainImage img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.product-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.product-gallery img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.product-modal-right {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+/* Reseñas */
+.reviews-section {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.reviews-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviews-section h4 {
+  font-size: 0.9rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.review-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+
+.review-stars {
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.review-author {
+  color: #666;
+}
+
+.review-comment {
+  font-size: 0.9rem;
+}
+
+/* Responsive modal en móvil */
+@media (max-width: 768px) {
+  .product-modal {
+    flex-direction: column;
+    max-height: 90vh;
+  }
+
+  .product-modal-left,
+  .product-modal-right {
+    width: 100%;
+  }
+
+  .product-modal-right {
+    max-height: none;
+  }
+}
     </style>
 </head>
 <body>
@@ -2490,86 +2601,79 @@ main {
         </div>
     </main>
 
-    <!-- Product Detail Modal -->
-    <div class="auth-modal" id="productModal" style="z-index:320;">
-        <div class="auth-content"
-            <span class="close-modal" onclick="closeProductModal()" style="right:12px;">&times;</span>
-            <div style="flex:1; min-width:300px;">
-                <div id="productMainImage">
-                    <img id="productMainImgTag" src="https://via.placeholder.com/700x450">
-                </div>
-                <div id="productThumbnails"></div>
-            </div>
-    <div style="width:380px;">
+<!-- Product Detail Modal -->
+<div class="auth-modal" id="productModal" style="z-index:320;">
+  <div class="auth-content product-modal">
+    <span class="close-modal" onclick="closeProductModal()" style="right:12px;">&times;</span>
 
-    <h2 id="modalProductName">Producto</h2>
-
-    <p id="modalProductCategory" style="color:#666; font-weight:700; text-transform:uppercase; font-size:0.9rem;"></p>
-
-    <p id="modalProductPrice" style="font-size:1.25rem; color:var(--primary); font-weight:800; margin-top:0.6rem;"></p>
-
-    <div class="form-group" style="margin-top:0.6rem;">
-        <label>Talla</label>
-        <select id="modalProductSizeSelect" style="width:100%; padding:0.6rem;">
-            <option value="">Selecciona talla</option>
-        </select>
+    <div class="product-modal-left">
+      <div id="productMainImage">
+        <img id="productMainImgTag"
+             src="https://via.placeholder.com/700x450"
+             alt="Producto StreetWearX">
+      </div>
+      <div id="productThumbnails" class="product-gallery"></div>
     </div>
 
-    <p id="modalProductDesc" style="margin-top:1rem; color:#333;"></p>
-    <p id="modalProductStock" style="margin-top:0.5rem; color:#666;"></p>
+    <div class="product-modal-right">
+      <h2 id="modalProductName">Producto</h2>
+      <p id="modalProductCategory" class="product-category">Categoría</p>
+      <p id="modalProductPrice" class="product-price">$0.00</p>
 
+      <div class="form-group size-selector">
+        <label for="modalProductSizeSelect">Talla</label>
+        <select id="modalProductSizeSelect"></select>
+      </div>
 
-    <!-- =============================================================== -->
-    <!-- 🔥🔥🔥   SECCIÓN DE RESEÑAS REALMENTE FUNCIONAL   🔥🔥🔥 -->
-    <!-- =============================================================== -->
+      <p id="modalProductDesc" class="product-description">
+        Descripción del producto...
+      </p>
+      <p id="modalProductStock" class="product-stock">
+        Stock: —
+      </p>
 
-    <div id="reviewsSection" style="margin-top:1.5rem;">
-        
-        <h3 style="font-size:1.2rem; margin-bottom:10px; font-weight:700;">
-            Reseñas
-        </h3>
+      <!-- ⭐ Reseñas -->
+      <div id="reviewsSection" class="reviews-section">
+        <h3>Reseñas</h3>
+        <div id="reviewsContainer"></div>
 
-        <!-- CONTENEDOR DONDE APARECEN LAS RESEÑAS -->
-        <div id="reviewsContainer" style="margin-bottom:20px;"></div>
-
-        <h4 style="font-size:1rem; margin-bottom:6px;">Escribe una reseña</h4>
-
-        <select id="reviewRating" 
-                style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc;">
-            <option value="5">⭐ 5 - Excelente</option>
-            <option value="4">⭐ 4 - Muy bueno</option>
-            <option value="3">⭐ 3 - Bueno</option>
-            <option value="2">⭐ 2 - Regular</option>
-            <option value="1">⭐ 1 - Malo</option>
-        </select>
-
-        <input id="reviewUsername" type="text" placeholder="Tu nombre (opcional)"
-               style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
-
-        <button onclick="submitReview()" 
-        style="width:100%; padding:12px; background:#111; color:white; border:none; border-radius:8px; font-weight:bold;">
-    Enviar reseña
-</button>
-        <textarea id="reviewComment" placeholder="Escribe tu opinión..."
-                  style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
-        </textarea>
-
-        <button onclick="submitReview()" 
-                style="width:100%; padding:12px; background:#ff4500; color:white; border:none; border-radius:10px; font-size:1rem;">
-            Publicar reseña
-        </button>
-
-    </div>
-
-    <!-- =============================================================== -->
-    
-</div>
-                    <button class="btn btn-primary" id="modalAddCartBtn">Agregar al Carrito</button>
-                    <button class="btn" onclick="closeProductModal()">Cerrar</button>
-                </div>
-            </div>
+        <h4>Escribe una reseña</h4>
+        <div class="form-group">
+          <label for="reviewRating">Calificación</label>
+          <select id="reviewRating">
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+          </select>
         </div>
+
+        <div class="form-group">
+          <label for="reviewUsername">Nombre</label>
+          <input id="reviewUsername" type="text" placeholder="Tu nombre (opcional)">
+        </div>
+
+        <div class="form-group">
+          <label for="reviewComment">Comentario</label>
+          <textarea id="reviewComment" rows="3" placeholder="Escribe qué te pareció el producto"></textarea>
+        </div>
+
+        <button id="sendReviewBtn" class="btn btn-primary" type="button">
+          Publicar reseña
+        </button>
+      </div>
+
+      <div class="modal-buttons" style="margin-top:1.5rem;">
+        <button id="modalAddCartBtn"
+                class="btn btn-add-cart add-to-cart-btn"
+                type="button">
+          Agregar al carrito
+        </button>
+      </div>
     </div>
+  </div>
+</div>
 
     <!-- Firebase Config & Scripts -->
     <script type="module">
@@ -3346,69 +3450,181 @@ main {
             }
         }
 
-        // Product detail modal functions
         window.openProductModal = function(productId) {
-            const prod = window.allProducts.find(p => p.id === productId);
-            if (!prod) return showToast('Producto no encontrado', 'error');
-            const images = (prod.imageUrls && prod.imageUrls.length) ? prod.imageUrls : (prod.imageUrl ? [prod.imageUrl] : []);
-            const mainImgTag = document.getElementById('productMainImgTag');
-            const thumbs = document.getElementById('productThumbnails');
-            document.getElementById('modalProductName').textContent = prod.name;
-            document.getElementById('modalProductCategory').textContent = prod.category;
-            document.getElementById('modalProductPrice').textContent = '$' + (prod.price || 0).toFixed(2);
-            document.getElementById('modalProductDesc').textContent = prod.description || '';
-            document.getElementById('modalProductStock').textContent = 'Stock: ' + (prod.stock || 0);
-            // Main image
-            mainImgTag.src = images[0] || 'https://via.placeholder.com/700x450';
-            // Thumbnails
-            thumbs.innerHTML = images.map((src, idx) => `
-                <img src="${src}" style="width:80px;height:80px;object-fit:cover;cursor:pointer;border:2px solid transparent" onclick="document.getElementById('productMainImgTag').src='${src}'" onerror="this.src='https://via.placeholder.com/80'">
-            `).join('');
 
-            // Populate size selector
-            const sizeSelect = document.getElementById('modalProductSizeSelect');
-            sizeSelect.innerHTML = '<option value="">Selecciona talla</option>';
-            if (prod.sizes && prod.sizes.length) {
-                prod.sizes.forEach(sz => {
-                    const opt = document.createElement('option'); opt.value = sz; opt.textContent = sz; sizeSelect.appendChild(opt);
-                });
-            }
+    const prod = window.allProducts.find(p => p.id === productId);
+    if (!prod) return showToast("Producto no encontrado", "error");
 
-            const addBtn = document.getElementById('modalAddCartBtn');
-            addBtn.onclick = function() {
-                const chosenSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : '';
-                addToCart(prod.id, prod.name, prod.price, images[0] || prod.imageUrl || '', chosenSize);
-            };
+    // ---- IMÁGENES ----
+    const images = prod.imageUrls && prod.imageUrls.length > 0 
+        ? prod.imageUrls 
+        : [prod.imageUrl || "https://via.placeholder.com/600x800"];
 
-            const pm = document.getElementById('productModal'); if (pm) pm.classList.add('active');
-        };
+    const mainImg = document.getElementById("productMainImgTag");
+    const thumbs = document.getElementById("productThumbnails");
 
-        window.closeProductModal = function() {
-            const pm = document.getElementById('productModal'); if (pm) pm.classList.remove('active');
-        };
+    mainImg.src = images[0];
 
-        function renderAdminProducts(products) {
-            const container = document.getElementById('adminProductsList');
-            if (!products || products.length === 0) {
-                container.innerHTML = '<p>No hay productos publicados</p>';
-                return;
-            }
+    thumbs.innerHTML = images.map((img, index) => `
+        <img src="${img}" class="thumb-img" 
+             onclick="document.getElementById('productMainImgTag').src='${img}'">
+    `).join("");
 
-            container.innerHTML = products.map(p => `
-                <div style="display:flex; gap:1rem; align-items:center; padding:0.8rem; border-bottom:1px solid var(--border)">
-                    <img src="${(p.imageUrls && p.imageUrls[0]) || p.imageUrl || 'https://via.placeholder.com/80'}" style="width:80px;height:80px;object-fit:cover;border:1px solid var(--border)" onerror="this.src='https://via.placeholder.com/80'">
-                    <div style="flex:1">
-                        <div style="font-weight:700; text-transform:uppercase">${p.name}</div>
-                        <div style="color:#666; font-size:0.9rem">${p.category} · $${(p.price||0).toFixed(2)} · Stock: ${p.stock||0}</div>
-                    </div>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button class="btn" style="background:var(--accent); color:white; padding:0.5rem 0.8rem; font-weight:700" onclick="event.stopPropagation(); editProduct('${p.id}')">Editar</button>
-                        <button class="btn" style="background:#f44336; color:white; padding:0.5rem 0.8rem; font-weight:700" onclick="event.stopPropagation(); deleteProduct('${p.id}', '${(p.cloudinaryPublicIds && p.cloudinaryPublicIds[0]) || (p.cloudinaryPublicId || '')}')">Borrar</button>
-                    </div>
-                </div>
-            `).join('');
-        }
 
+    // ---- TEXTO ----
+    document.getElementById("modalProductName").textContent = prod.name;
+    document.getElementById("modalProductCategory").textContent = prod.category;
+    document.getElementById("modalProductPrice").textContent =
+        "$" + (prod.price || 0).toFixed(2);
+    document.getElementById("modalProductDesc").textContent =
+        prod.description || "";
+    document.getElementById("modalProductStock").textContent =
+        "Stock: " + (prod.stock || 0);
+
+
+    // ---- GENERAR SELECT DE TALLAS ----
+    const sizeSelect = document.getElementById("modalProductSizeSelect");
+    sizeSelect.innerHTML =
+        `<option value="">Selecciona talla</option>` +
+        (prod.sizes ? prod.sizes.map(s => `<option>${s}</option>`).join("") : "");
+
+
+    // ---- CARGAR RESEÑAS ----
+    loadReviews(productId);
+
+    // ---- GUARDAR COMO RECIENTE ----
+    saveRecentProduct(prod);
+
+    // ---- MOSTRAR MODAL ----
+    document.getElementById("productModal").style.display = "flex";
+    document.body.style.overflow = "hidden";
+};
+        // 🔹 LocalStorage para reseñas
+const REVIEWS_STORAGE_KEY = "streetwearx_reviews";
+
+function getAllReviews() {
+  try {
+    const raw = localStorage.getItem(REVIEWS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    console.error("Error leyendo reseñas:", e);
+    return {};
+  }
+}
+
+function saveAllReviews(data) {
+  try {
+    localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error("Error guardando reseñas:", e);
+  }
+}
+
+function getProductReviews(productId) {
+  const all = getAllReviews();
+  return all[productId] || [];
+}
+
+function saveReview(productId, review) {
+  const all = getAllReviews();
+  if (!all[productId]) all[productId] = [];
+  all[productId].push(review);
+  saveAllReviews(all);
+}
+
+/**
+ * Pinta las reseñas en el modal
+ */
+function renderReviews(productId) {
+  const container = document.getElementById("reviewsContainer");
+  if (!container) return;
+
+  const reviews = getProductReviews(productId);
+
+  if (!reviews.length) {
+    container.innerHTML = `<p style="color:#777;font-size:0.9rem;">Aún no hay reseñas para este producto.</p>`;
+    return;
+  }
+
+  container.innerHTML = "";
+  reviews.forEach(r => {
+    const item = document.createElement("div");
+    item.className = "review-item";
+
+    const header = document.createElement("div");
+    header.className = "review-header";
+
+    const stars = document.createElement("span");
+    stars.className = "review-stars";
+    stars.textContent = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+
+    const author = document.createElement("span");
+    author.className = "review-author";
+    const dateStr = r.date ? new Date(r.date).toLocaleDateString() : "";
+    author.textContent = `${r.username || "Anónimo"} · ${dateStr}`;
+
+    header.appendChild(stars);
+    header.appendChild(author);
+
+    const comment = document.createElement("p");
+    comment.className = "review-comment";
+    comment.textContent = r.comment;
+
+    item.appendChild(header);
+    item.appendChild(comment);
+
+    container.appendChild(item);
+  });
+}
+
+/**
+ * Maneja el click al botón "Publicar reseña"
+ */
+function handleReviewSubmit() {
+  if (!window.currentReviewProductId) {
+    showToast("Abre primero un producto para reseñar.");
+    return;
+  }
+
+  const ratingSel = document.getElementById("reviewRating");
+  const userInput = document.getElementById("reviewUsername");
+  const commentInput = document.getElementById("reviewComment");
+
+  if (!ratingSel || !commentInput) return;
+
+  const rating = Number(ratingSel.value || 5);
+  const comment = (commentInput.value || "").trim();
+  const username = (userInput?.value || "").trim();
+
+  if (!comment) {
+    showToast("Escribe un comentario para tu reseña.");
+    return;
+  }
+
+  const review = {
+    rating: isNaN(rating) ? 5 : rating,
+    comment,
+    username: username || "Anónimo",
+    date: Date.now()
+  };
+
+  saveReview(window.currentReviewProductId, review);
+
+  // Limpiar campos
+  commentInput.value = "";
+  if (userInput) userInput.value = "";
+
+  renderReviews(window.currentReviewProductId);
+  showToast("¡Gracias por tu reseña!");
+}
+
+// Conectar el botón del modal
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("sendReviewBtn");
+  if (btn) {
+    btn.addEventListener("click", handleReviewSubmit);
+  }
+});
         // Fill the add/edit form with existing product data
         async function editProduct(productId) {
             try {
@@ -3908,14 +4124,7 @@ showProductModal = function(product) {
 };
 
 /* -------------------------------
-   5) CUANDO AGREGAS UN PRODUCTO AL CARRITO
-   ------------------------------- */
-// Modifica esta función donde agregas productos
-function addToCart(product) {
-    cart.push(product);
-    saveCartToLocalStorage(); // 🔥 guardar
-    updateCartUI();
-}
+
 </script>
 </body>
 </html>
