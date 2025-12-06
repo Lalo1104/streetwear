@@ -1764,6 +1764,133 @@ main {
         border-radius: 10px !important;
     }
 }
+        /* ===== VISTA DE PRODUCTO ESTILO NIKE (MÓVIL) ===== */
+@media (max-width: 600px) {
+
+    /* Contenedor del modal */
+    #productModal .auth-content {
+        width: 95% !important;
+        max-width: 420px !important;
+        border-radius: 14px !important;
+        padding: 0 !important;
+        overflow: hidden;
+    }
+
+    /* Imagen principal */
+    #productMainImage {
+        width: 100% !important;
+        height: 260px !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        border-radius: 0 !important;
+    }
+
+    #productMainImgTag {
+        height: 260px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+    }
+
+    /* Miniaturas */
+    .product-gallery {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        padding: 10px !important;
+        overflow-x: auto !important;
+    }
+
+    .product-gallery img {
+        width: 55px !important;
+        height: 55px !important;
+        object-fit: cover !important;
+        border-radius: 6px;
+        border: 2px solid #eee;
+    }
+
+    /* Información del producto */
+    #productModal .modal-info {
+        padding: 16px !important;
+    }
+
+    #productModal h2 {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 6px !important;
+    }
+
+    #modalProductCategory {
+        font-size: 0.85rem !important;
+        color: #777 !important;
+        margin-bottom: 12px !important;
+    }
+
+    #modalProductPrice {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 16px !important;
+    }
+
+    /* Selector de talla */
+    .size-selector {
+        margin-bottom: 16px !important;
+    }
+
+    .size-selector select {
+        width: 100% !important;
+        padding: 10px !important;
+        font-size: 1rem !important;
+        border-radius: 8px;
+    }
+
+    /* Descripción */
+    #modalProductDescription {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        margin-top: 12px !important;
+    }
+
+    /* STOCK */
+    #modalProductStock {
+        margin-top: 12px !important;
+        font-size: 0.9rem !important;
+        color: #444 !important;
+    }
+
+    /* Botones */
+    #productModal .modal-buttons {
+        display: flex !important;
+        justify-content: space-between !important;
+        padding: 16px !important;
+        gap: 10px !important;
+    }
+
+    .btn-add-cart,
+    .add-to-cart-btn {
+        flex: 1;
+        padding: 12px !important;
+        font-size: 1rem !important;
+        border-radius: 10px !important;
+    }
+}
+        /* ==== FIX SELECTOR DE CATEGORÍAS ==== */
+.filter-section {
+    z-index: 10 !important;
+    position: relative !important;
+    padding: 10px 15px !important;
+}
+
+.filter-section select {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 1rem !important;
+    border-radius: 8px !important;
+    background: white !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+}
     </style>
 </head>
 <body>
@@ -2090,7 +2217,7 @@ main {
         </div>
 
         <div class="filter-section">
-            <select id="categoryFilter" onchange="applyFilters()">
+            <select id="categoryFilter" onchange="filterProducts()">
                 <option value="">Todas las Categorías</option>
                 <option value="hombres">Hombres</option>
                 <option value="mujeres">Mujeres</option>
