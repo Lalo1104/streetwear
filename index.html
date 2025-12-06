@@ -3894,8 +3894,7 @@ if (document.getElementById("modalAddCartBtn")) {
 }
     </script>
     <script>
-    let deferredPrompt = null;
-
+        let currentReviewProduct = null;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
