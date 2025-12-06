@@ -3817,6 +3817,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Autoplay when idle (no interactions) — checks periodically
         window._carouselAutoPlayTimer = setInterval(() => {
+        
             const now = Date.now();
             if (now - (window.lastCarouselInteraction || 0) > window.autoPlayInterval) {
                 window.scrollCarousel(1);
@@ -3940,7 +3941,6 @@ document.addEventListener("scroll", () => {
 });
 </script>
     <script>
-  let currentReviewProduct = null;
 document.addEventListener("scroll", () => {
     const banner = document.querySelector(".hero-banner");
 
@@ -4041,7 +4041,7 @@ function loadRecentProducts() {
    SISTEMA DE RESEÑAS
 ============================ */
 let currentReviewProduct = null;
-        
+window.currentReviewProduct = null;   // ← NECESARIO para carrito y reseñas
 // ----- Cargar reseñas -----
 function loadReviews(productId) {
     const saved = JSON.parse(localStorage.getItem("reviews")) || {};
@@ -4052,15 +4052,15 @@ function loadReviews(productId) {
 
     container.innerHTML = reviews.length
         ? reviews.map(r => `
-            <div style="background:#f5f5f5; padding:10px; border-radius:6px; margin-bottom:8px;">
+            <div style="background:#f5f5f5; padding:10px; border-radius:6px; margin-bottom:10px;">
                 <p><strong>${"⭐".repeat(r.rating)}</strong></p>
                 <p>${r.text}</p>
-                <small style="color:#666;">${r.name || "Anónimo"}</small>
+                <small style="color:#777;">${r.date}</small>
             </div>
-        `).join("")
-        : `<p style="color:#666;">No hay reseñas todavía.</p>`;
+        `).join('')
+        : "<p style='color:#888;'>No hay reseñas todavía.</p>";
 }
-
+        window.loadReviews = loadReviews;
 // ----- Guardar reseña -----
 function saveReview() {
     const rating = document.getElementById("reviewRating").value;
@@ -4089,24 +4089,31 @@ function saveReview() {
     document.getElementById("reviewRating").value = "";
 
      loadReviews(currentReviewProduct.id);
-/* Modifica tu función actual de abrir producto */
-/* Modifica tu función actual de abrir producto */
 function openProduct(product) {
 
-    // Asignamos correctamente el ID del producto
+    // NECESARIO para reseñas y carrito
+    currentReviewProduct = product;
+    window.currentReviewProduct = product;
     currentProductId = product.id;
-
-    // Guardar en historial (si lo usas)
+    window.currentReviewProductId = product.id;   // <-- ESTA LÍNEA ES LA CLAVE 🔥
     saveRecentProduct(product);
-
-    // Mostrar modal
     showProductModal(product);
+    // Cargar reseñas del producto abierto
+    if (typeof loadReviews === "function") {
+        loadReviews(product.id);
+    }
+} 
+    const modalBtn = document.getElementById("modalAddCartBtn");
+
+if (modalBtn) {
+    modalBtn.addEventListener("click", () => {
+        if (!currentReviewProduct) {
+            console.error("No hay producto cargado en el modal");
+            return;
+        }
+        addToCart(currentReviewProduct); // ✔ usa el OBJETO completo
+    });
 }
-    function closeProductModal() {
-    document.getElementById("productModal").style.display = "none";
-    document.body.style.overflow = "auto"; // permite scroll de nuevo
-}
-        
 </script>
 </body>
 </html>
