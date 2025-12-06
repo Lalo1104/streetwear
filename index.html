@@ -2234,12 +2234,6 @@ main {
     max-height: none;
   }
 }
-        // === AGREGAR PRODUCTO DESDE EL MODAL ===
-if (document.getElementById("modalAddCartBtn")) {
-    document.getElementById("modalAddCartBtn").onclick = function () {
-        addToCart(currentReviewProduct);
-    };
-}
     </style>
 </head>
 <body>
@@ -2671,11 +2665,7 @@ if (document.getElementById("modalAddCartBtn")) {
       </div>
 
       <div class="modal-buttons" style="margin-top:1.5rem;">
-        <button id="modalAddCartBtn"
-                class="btn btn-add-cart add-to-cart-btn"
-                type="button">
-          Agregar al carrito
-        </button>
+        <button id="modalAddCartBtn"class="btn btn-add-cart add-to-cart-btn"type="button">Agregar al carrito</button>
       </div>
     </div>
   </div>
@@ -3896,6 +3886,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
         }
+          // === AGREGAR PRODUCTO DESDE EL MODAL ===
+if (document.getElementById("modalAddCartBtn")) {
+    document.getElementById("modalAddCartBtn").onclick = function () {
+        addToCart(currentReviewProduct);
+    };
+}
     </script>
     <script>
     let deferredPrompt = null;
