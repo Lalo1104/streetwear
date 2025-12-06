@@ -1,623 +1,428 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StreetWearX - Tienda Urbana</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StreetWearX — Tienda Urbana</title>
 
-  <!-- Manifest PWA -->
-  <link rel="manifest" href="manifest.json" />
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon.png" />
 
-  <style>
-    :root{
-      --primary:#000000;
-      --accent:#D4AF37;
-      --bg:#f4f4f5;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --danger:#ef4444;
-      --success:#16a34a;
-    }
+<style>
+/* --------------------- */
+/* ESTILO STREETWEAR     */
+/* --------------------- */
+:root{
+  --black:#000;
+  --gold:#D4AF37;
+  --gray:#f5f5f5;
+  --card:#111;
+  --text:#fff;
+  --muted:#9ca3af;
+  --danger:#ef4444;
+  --success:#16a34a;
+  --radius:12px;
+}
 
-    *{box-sizing:border-box;margin:0;padding:0}
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#000;
+  color:var(--text);
+}
 
-    body{
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-    }
+/* NAV */
+nav{
+  background:#000;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  border-bottom:1px solid #222;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
 
-    /* NAV */
-    nav{
-      position:sticky;
-      top:0;
-      z-index:20;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px 18px;
-      background:var(--primary);
-      color:#fff;
-      box-shadow:0 2px 8px rgba(0,0,0,0.25);
-    }
-    .nav-left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .logo-circle{
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:var(--primary);
-    }
-    .brand-title{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-    }
-    .brand-title span:first-child{
-      font-weight:700;
-      letter-spacing:0.05em;
-    }
-    .brand-title span:last-child{
-      font-size:12px;
-      color:#d1d5db;
-    }
-    .nav-right{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+.logo{
+  font-size:22px;
+  font-weight:900;
+  color:var(--gold);
+  letter-spacing:1px;
+}
 
-    .btn{
-      border:none;
-      cursor:pointer;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:13px;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:#111827;
-      color:#fff;
-    }
-    .btn-outline{
-      background:transparent;
-      border:1px solid #4b5563;
-      color:#e5e7eb;
-    }
-    .btn-accent{
-      background:var(--accent);
-      color:#111;
-      font-weight:600;
-    }
-    .btn-danger{
-      background:var(--danger);
-    }
+.btn{
+  background:#111;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:var(--radius);
+  border:1px solid #333;
+  cursor:pointer;
+  font-size:13px;
+}
 
-    main{
-      max-width:1200px;
-      margin:0 auto;
-      padding:16px;
-    }
+.btn-gold{
+  background:var(--gold);
+  color:#000;
+  font-weight:600;
+}
 
-    /* Hero */
-    .hero{
-      display:grid;
-      grid-template-columns: minmax(0,2fr) minmax(0,1.4fr);
-      gap:18px;
-      margin-bottom:22px;
-    }
-    @media (max-width: 768px){
-      .hero{
-        grid-template-columns:1fr;
-      }
-    }
-    .hero-card{
-      background:linear-gradient(135deg,#000000,#111827);
-      color:#f9fafb;
-      border-radius:18px;
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-    }
-    .hero-card h1{
-      font-size:24px;
-      margin-bottom:8px;
-    }
-    .hero-card p{
-      font-size:14px;
-      color:#e5e7eb;
-      max-width:320px;
-    }
-    .hero-tag{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      background:rgba(17,24,39,0.8);
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:11px;
-      margin-bottom:10px;
-      border:1px solid rgba(249,250,251,0.2);
-    }
-    .hero-badge{
-      position:absolute;
-      right:18px;
-      bottom:18px;
-      background:#f9fafb;
-      color:#111827;
-      padding:8px 12px;
-      border-radius:12px;
-      font-size:11px;
-      text-align:right;
-    }
-    .hero-img{
-      border-radius:18px;
-      background:radial-gradient(circle at top,#111827, #000000);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#e5e7eb;
-      font-size:14px;
-      padding:16px;
-    }
+.btn-danger{
+  background:var(--danger);
+}
 
-    /* Filtros */
-    .filters{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:12px;
-    }
-    .filters-left{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
-    }
-    .chip{
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#fff;
-      font-size:12px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      color:#4b5563;
-    }
-    .chip.active{
-      background:#111827;
-      color:#f9fafb;
-      border-color:#111827;
-    }
+.btn-outline{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+}
 
-    .status-text{
-      font-size:12px;
-      color:var(--muted);
-    }
+/* Contenedor principal */
+main{
+  padding:20px;
+}
 
-    /* Grid productos */
-    .products-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
-      gap:14px;
-    }
-    .product-card{
-      background:var(--card);
-      border-radius:16px;
-      padding:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.06);
-      display:flex;
-      flex-direction:column;
-      min-height:100%;
-    }
-    .product-img{
-      width:100%;
-      height:190px;
-      border-radius:12px;
-      background:#111827;
-      overflow:hidden;
-      margin-bottom:8px;
-    }
-    .product-img img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .product-body{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      font-size:13px;
-    }
-    .product-title{
-      font-weight:600;
-    }
-    .product-meta{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .product-price{
-      font-weight:700;
-      font-size:15px;
-    }
-    .product-footer{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:8px;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-    .admin-actions{
-      display:flex;
-      gap:4px;
-    }
+/* Productos */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:15px;
+}
 
-    /* PANEL CARRITO */
-    .cart-panel-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.35);
-      display:none;
-      align-items:stretch;
-      justify-content:flex-end;
-      z-index:40;
-    }
-    .cart-panel-backdrop.active{
-      display:flex;
-    }
-    .cart-panel{
-      width:100%;
-      max-width:380px;
-      background:#f9fafb;
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      box-shadow:-2px 0 8px rgba(0,0,0,0.2);
-    }
-    .cart-header{
-      padding:12px 14px;
-      border-bottom:1px solid #e5e7eb;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .cart-body{
-      flex:1;
-      overflow-y:auto;
-      padding:10px 14px;
-      font-size:13px;
-    }
-    .cart-footer{
-      padding:10px 14px;
-      border-top:1px solid #e5e7eb;
-      background:#fff;
-    }
-    .cart-item{
-      display:flex;
-      gap:8px;
-      margin-bottom:8px;
-      border-bottom:1px solid #e5e7eb;
-      padding-bottom:6px;
-    }
-    .cart-item-img{
-      width:60px;
-      height:60px;
-      background:#111827;
-      border-radius:8px;
-      overflow:hidden;
-      flex-shrink:0;
-    }
-    .cart-item-img img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-    .cart-item-body{
-      flex:1;
-    }
-    .qty-controls{
-      display:flex;
-      align-items:center;
-      gap:4px;
-      margin-top:4px;
-    }
-    .qty-btn{
-      width:22px;
-      height:22px;
-      border-radius:999px;
-      border:none;
-      background:#e5e7eb;
-      cursor:pointer;
-    }
+.card{
+  background:#111;
+  padding:12px;
+  border-radius:var(--radius);
+  border:1px solid #222;
+}
 
-    /* Toast */
-    .toast{
-      position:fixed;
-      bottom:16px;
-      left:50%;
-      transform:translateX(-50%);
-      background:#111827;
-      color:#f9fafb;
-      padding:9px 16px;
-      border-radius:999px;
-      font-size:13px;
-      display:none;
-      z-index:60;
-    }
-    .toast.success{ background:var(--success); }
-    .toast.error{ background:var(--danger); }
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:var(--radius);
+}
 
-  </style>
+.card-title{
+  margin-top:8px;
+  font-size:15px;
+  font-weight:600;
+}
+
+.card-price{
+  color:var(--gold);
+  font-weight:700;
+  margin:4px 0;
+}
+
+.card-footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+}
+
+/* Carrito */
+#cartPanel{
+  position:fixed;
+  right:-100%;
+  top:0;
+  width:85%;
+  max-width:380px;
+  height:100%;
+  background:#111;
+  color:#fff;
+  transition:.3s;
+  padding:20px;
+  overflow-y:auto;
+  border-left:2px solid var(--gold);
+  z-index:20;
+}
+
+#cartPanel.active{
+  right:0;
+}
+
+.cart-item{
+  display:flex;
+  gap:10px;
+  border-bottom:1px solid #222;
+  padding:10px 0;
+}
+
+.cart-item img{
+  width:60px;
+  height:60px;
+  border-radius:var(--radius);
+}
+
+/* Modal: admin */
+#modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:30;
+}
+
+#modal.active{display:flex;}
+
+.modal-box{
+  background:#111;
+  padding:20px;
+  width:90%;
+  max-width:400px;
+  border-radius:var(--radius);
+  border:1px solid var(--gold);
+}
+
+/* Instalación PWA */
+#installBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:12px 18px;
+  background:var(--gold);
+  color:#000;
+  font-weight:700;
+  border-radius:var(--radius);
+  display:none;
+  z-index:50;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
+<nav>
+  <div class="logo">StreetWearX</div>
 
-  <!-- PANEL CARRITO -->
-  <div id="cartPanelBackdrop" class="cart-panel-backdrop">
-    <div class="cart-panel">
-      <div class="cart-header">
-        <div>
-          <strong>Carrito</strong>
-          <div id="cartSubtitle">0 artículos</div>
-        </div>
-        <button class="btn btn-outline" id="closeCartBtn">Cerrar</button>
-      </div>
-      <div class="cart-body" id="cartItems"></div>
-      <div class="cart-footer">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-          <span>Total</span>
-          <strong id="cartTotal">$0.00</strong>
-        </div>
-        <button class="btn btn-accent" style="width:100%;">Finalizar compra</button>
-      </div>
-    </div>
+  <div style="display:flex;gap:10px;">
+    <button class="btn-outline" id="adminBtn">Admin</button>
+    <button class="btn-gold" id="cartBtn">Carrito (<span id="cartCount">0</span>)</button>
   </div>
+</nav>
 
-  <!-- Modal login admin -->
-  <div id="adminLoginBackdrop" class="modal-backdrop">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">Acceso administrador</span>
-        <button class="modal-close" data-close-admin-login>&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Correo</label>
-          <input type="email" id="adminEmail" placeholder="admin@streetwearx.com" />
-        </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" id="adminPassword" placeholder="********" />
-        </div>
-        <button class="btn btn-accent" id="adminLoginBtn" style="width:100%;margin-top:6px;">Entrar</button>
-        <div style="font-size:11px;color:#9ca3af;margin-top:4px;">
-          * Demo escolar (admin: admin@streetwearx.com / 123456)
-        </div>
-      </div>
-    </div>
+<main>
+  <h2 style="color:var(--gold);margin-bottom:10px;">Productos</h2>
+  <div id="products" class="products"></div>
+</main>
+
+
+<!-- PANEL CARRITO -->
+<div id="cartPanel">
+  <h2 style="color:var(--gold);">Carrito</h2>
+  <div id="cartItems"></div>
+  <h3>Total: <span id="cartTotal">$0.00</span></h3>
+  <button class="btn-gold" style="width:100%;">Finalizar compra</button>
+</div>
+
+
+<!-- MODAL ADMIN -->
+<div id="modal">
+  <div class="modal-box">
+    <h3 style="color:var(--gold);" id="modalTitle">Nuevo producto</h3>
+
+    <input id="pName" placeholder="Nombre" style="width:100%;margin-bottom:6px;">
+    <input id="pPrice" type="number" placeholder="Precio" style="width:100%;margin-bottom:6px;">
+    <input id="pCategory" placeholder="Categoría" style="width:100%;margin-bottom:6px;">
+    <input id="pImage" type="file" style="width:100%;margin-bottom:6px;">
+    <textarea id="pDescription" placeholder="Descripción" style="width:100%;height:80px;margin-bottom:6px;"></textarea>
+
+    <button class="btn-gold" id="saveProduct" style="width:100%;">Guardar</button>
   </div>
+</div>
 
-  <!-- Modal producto -->
-  <div id="productModalBackdrop" class="modal-backdrop">
-    <div class="modal">
-      <div class="modal-header">
-        <span id="productModalTitle">Nuevo producto</span>
-        <button class="modal-close" data-close-product>&times;</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="productId" />
-        <div class="form-group">
-          <label>Nombre</label>
-          <input type="text" id="productName" />
-        </div>
-        <div class="form-group">
-          <label>Precio</label>
-          <input type="number" id="productPrice" />
-        </div>
-        <div class="form-group">
-          <label>Categoría</label>
-          <select id="productCategory">
-            <option value="hombre">Hombre</option>
-            <option value="mujer">Mujer</option>
-            <option value="unisex">Unisex</option>
-            <option value="accesorios">Accesorios</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Subcategoría</label>
-          <input type="text" id="productSubcategory" />
-        </div>
-        <div class="form-group">
-          <label>Stock</label>
-          <input type="number" id="productStock" />
-        </div>
-        <div class="form-group">
-          <label>Descripción</label>
-          <textarea id="productDescription"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Imagen</label>
-          <input type="file" id="productImage" accept="image/*" />
-          <small style="font-size:11px;color:#9ca3af;">Sube a Cloudinary automáticamente</small>
-        </div>
-        <button class="btn btn-accent" id="saveProductBtn" style="width:100%;">Guardar</button>
+<button id="installBtn">Instalar App</button>
+
+
+<!-- SISTEMA APP -->
+<script type="module">
+
+/* ----------------------------------------- */
+/* FIREBASE CONFIG (YA COLOCADO TUYO)        */
+/* ----------------------------------------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB-Ag7WIUBcGgJPBg6taUqtGVHgWAwekhY",
+  authDomain: "proyect1-37d04.firebaseapp.com",
+  projectId: "proyect1-37d04",
+  storageBucket: "proyect1-37d04.firebasestorage.app",
+  messagingSenderId: "989990045683",
+  appId: "1:989990045683:web:778984a898aa4046097486",
+  measurementId: "G-WBQ6DYGRG8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ----------------------------------------- */
+/* CLOUDINARY CONFIG (YA COLOCADO TUYO)      */
+/* ----------------------------------------- */
+const CLOUD_NAME = "dv5pdjhso";
+const PRESET = "streetwearx_unsigned";
+
+async function uploadImage(file){
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", PRESET);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+    method:"POST",
+    body: form
+  });
+  const data = await res.json();
+  return data.secure_url;
+}
+
+/* ----------------------------------------- */
+/* ESTADO GLOBAL                             */
+/* ----------------------------------------- */
+let allProducts = [];
+let cart = JSON.parse(localStorage.getItem("swx_cart") || "[]");
+let editingId = null;
+
+/* ----------------------------------------- */
+/* MOSTRAR PRODUCTOS                         */
+/* ----------------------------------------- */
+async function loadProducts(){
+  const snapshot = await getDocs(collection(db,"products"));
+  allProducts = [];
+  snapshot.forEach(docu => allProducts.push({id:docu.id,...docu.data()}));
+  renderProducts();
+}
+
+function renderProducts(){
+  products.innerHTML = allProducts.map(p=>`
+    <div class="card">
+      <img src="${p.imageURL}">
+      <div class="card-title">${p.name}</div>
+      <div class="card-price">$${p.price}</div>
+
+      <div class="card-footer">
+        <button class="btn" onclick="addToCart('${p.id}')">Agregar</button>
+        <button class="btn-outline" onclick="editProduct('${p.id}')">Editar</button>
       </div>
     </div>
-  </div>
+  `).join("");
+}
 
-  <!-- NAVBAR -->
-  <nav>
-    <div class="nav-left">
-      <div class="logo-circle">SWX</div>
-      <div class="brand-title">
-        <span>StreetWearX</span>
-        <span>Ropa urbana</span>
+/* ----------------------------------------- */
+/* CARRITO                                   */
+/* ----------------------------------------- */
+function saveCart(){
+  localStorage.setItem("swx_cart", JSON.stringify(cart));
+}
+
+window.addToCart = function(id){
+  const product = allProducts.find(p=>p.id===id);
+  const existing = cart.find(i=>i.id===id);
+
+  if(existing) existing.qty++;
+  else cart.push({...product, qty:1});
+
+  saveCart();
+  updateCartUI();
+};
+
+function updateCartUI(){
+  cartItems.innerHTML = cart.map(i=>`
+    <div class="cart-item">
+      <img src="${i.imageURL}">
+      <div>
+        <div>${i.name}</div>
+        <div>$${i.price}</div>
+        <div>Cantidad: ${i.qty}</div>
       </div>
     </div>
-    <div class="nav-right">
-      <button class="btn btn-outline" id="adminPanelBtn">Admin</button>
-      <button class="btn btn-accent" id="cartBtn">
-        Carrito <span id="cartCount" style="background:#111827;color:white;border-radius:999px;padding:2px 7px;font-size:11px;">0</span>
-      </button>
-    </div>
-  </nav>
+  `).join("");
 
-  <!-- HERO -->
-  <main>
-    <section class="hero">
-      <div class="hero-card">
-        <div class="hero-tag">⚡ Nueva colección FW</div>
-        <h1>Ropa urbana lista para la calle</h1>
-        <p>Administra tu catálogo, controla inventario y vende desde cualquier dispositivo.</p>
-        <button class="btn btn-accent" id="primaryCtaBtn">Ver productos</button>
-        <div class="hero-badge">100% Responsive</div>
-      </div>
-      <div class="hero-img">Tu tienda en versión PWA</div>
-    </section>
+  const total = cart.reduce((s,i)=>s+(i.qty*i.price),0);
+  cartTotal.textContent = "$" + total.toFixed(2);
+  cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0);
+}
 
-    <!-- FILTROS -->
-    <section class="filters">
-      <div class="filters-left">
-        <span style="color:#6b7280;font-size:13px;">Categorías:</span>
-        <button class="chip active" data-filter-category="todos">Todos</button>
-        <button class="chip" data-filter-category="hombre">Hombre</button>
-        <button class="chip" data-filter-category="mujer">Mujer</button>
-        <button class="chip" data-filter-category="unisex">Unisex</button>
-        <button class="chip" data-filter-category="accesorios">Accesorios</button>
-      </div>
-      <div class="status-text" id="appStatus">Cargando productos...</div>
-    </section>
+/* ----------------------------------------- */
+/* ADMIN PANEL                               */
+/* ----------------------------------------- */
+window.editProduct = function(id){
+  editingId = id;
+  const p = allProducts.find(x=>x.id===id);
 
-    <!-- GRID PRODUCTOS -->
-    <section>
-      <div class="products-grid" id="productsGrid"></div>
-    </section>
-  </main>
+  pName.value = p.name;
+  pPrice.value = p.price;
+  pCategory.value = p.category;
+  pDescription.value = p.description;
 
-  <!-- SCRIPT PRINCIPAL -->
-  <script type="module">
-    /* ---------------- FIREBASE ---------------- */
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import {
-      getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc
-    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  modalTitle.textContent = "Editar producto";
+  modal.classList.add("active");
+};
 
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_BUCKET",
-      messagingSenderId: "TU_SENDER",
-      appId: "TU_APPID"
-    };
+saveProduct.onclick = async () => {
+  const name = pName.value;
+  const price = +pPrice.value;
+  const category = pCategory.value;
+  const description = pDescription.value;
+  let imageURL = null;
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  if(pImage.files.length){
+    imageURL = await uploadImage(pImage.files[0]);
+  }
 
-    /* ---------------- CLOUDINARY ---------------- */
-    const CLOUDINARY_CLOUD_NAME = "TU_CLOUD_NAME";
-    const CLOUDINARY_UPLOAD_PRESET = "TU_PRESET";
+  const payload = {name,price,category,description};
+  if(imageURL) payload.imageURL = imageURL;
 
-    async function uploadImage(file) {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  if(editingId){
+    await updateDoc(doc(db,"products",editingId),payload);
+  } else{
+    await addDoc(collection(db,"products"),payload);
+  }
 
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-        method: "POST",
-        body: form
-      });
-      const data = await res.json();
-      return data.secure_url;
-    }
+  modal.classList.remove("active");
+  editingId = null;
+  loadProducts();
+};
 
-    /* ---------------- ESTADO ---------------- */
-    let allProducts = [];
-    let filteredProducts = [];
-    let cart = JSON.parse(localStorage.getItem("swx_cart") || "[]");
-    let isAdmin = false;
+/* ----------------------------------------- */
+/* INSTALAR PWA                              */
+/* ----------------------------------------- */
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
 
-    /* ---------------- UI ---------------- */
-    const productsGrid = document.getElementById("productsGrid");
-    const cartCount = document.getElementById("cartCount");
-    const appStatus = document.getElementById("appStatus");
+window.addEventListener("beforeinstallprompt", e=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "block";
+});
 
-    /* ---------------- CARGAR PRODUCTOS ---------------- */
-    async function loadProducts() {
-      const snap = await getDocs(collection(db, "products"));
-      allProducts = [];
-      snap.forEach(d => allProducts.push({ id: d.id, ...d.data() }));
-      applyFilters();
-    }
+installBtn.addEventListener("click", async ()=>{
+  installBtn.style.display = "none";
+  deferredPrompt.prompt();
+});
 
-    function applyFilters() {
-      filteredProducts = allProducts;
-      renderProducts(filteredProducts);
-    }
+/* ----------------------------------------- */
+/* EVENTOS UI                                */
+/* ----------------------------------------- */
+adminBtn.onclick = ()=> modal.classList.add("active");
+cartBtn.onclick = ()=> cartPanel.classList.add("active");
+document.body.onclick = e=>{
+  if(e.target===cartPanel) cartPanel.classList.remove("active");
+};
 
-    function renderProducts(list) {
-      if (list.length === 0) {
-        productsGrid.innerHTML = "<p>No hay productos</p>";
-        appStatus.textContent = "Productos cargados: 0";
-        return;
-      }
+/* ----------------------------------------- */
+/* INICIO                                    */
+/* ----------------------------------------- */
+loadProducts();
+updateCartUI();
 
-      productsGrid.innerHTML = list.map(p => `
-        <div class="product-card">
-          <div class="product-img">
-            <img src="${p.imageURL || ''}" alt="">
-          </div>
-          <div class="product-body">
-            <div class="product-title">${p.name}</div>
-            <div class="product-price">$${p.price}</div>
-          </div>
-          <div class="product-footer">
-            <button class="btn" onclick="addToCart('${p.id}')">Agregar</button>
-            ${isAdmin ? `
-            <button class="btn btn-outline" onclick="editProduct('${p.id}')">Editar</button>
-            <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Borrar</button>` : ""}
-          </div>
-        </div>
-      `).join("");
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js");
+}
 
-      appStatus.textContent = "Productos cargados: " + list.length;
-    }
-
-    /* ---------------- CARRITO ---------------- */
-    window.addToCart = function(id) {
-      alert("Producto agregado: " + id);
-    };
-
-    /* ---------------- INICIO ---------------- */
-    loadProducts();
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js");
-    }
-  </script>
+</script>
 
 </body>
 </html>
