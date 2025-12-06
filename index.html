@@ -4060,7 +4060,7 @@ function loadReviews(productId) {
         `).join('')
         : "<p style='color:#888;'>No hay reseñas todavía.</p>";
 }
-        window.loadReviews = loadReviews;
+       globalThis.loadReviews = loadReviews;
 // ----- Guardar reseña -----
 function saveReview() {
     const rating = document.getElementById("reviewRating").value;
@@ -4088,21 +4088,21 @@ function saveReview() {
     document.getElementById("reviewUsername").value = "";
     document.getElementById("reviewRating").value = "";
 
-     loadReviews(currentReviewProduct.id);
 function openProduct(product) {
-
     // NECESARIO para reseñas y carrito
     currentReviewProduct = product;
     window.currentReviewProduct = product;
+
     currentProductId = product.id;
-    window.currentReviewProductId = product.id;   // <-- ESTA LÍNEA ES LA CLAVE 🔥
+    window.currentReviewProductId = product.id;
     saveRecentProduct(product);
     showProductModal(product);
-    // Cargar reseñas del producto abierto
-    if (typeof loadReviews === "function") {
-        loadReviews(product.id);
+
+    // 👉 Cargar reseñas del producto abierto
+    if (typeof globalThis.loadReviews === "function") {
+        globalThis.loadReviews(product.id);
     }
-} 
+}
     const modalBtn = document.getElementById("modalAddCartBtn");
 
 if (modalBtn) {
