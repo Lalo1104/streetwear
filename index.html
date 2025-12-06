@@ -2007,6 +2007,122 @@ main {
         font-size: 1rem !important;
     }
 }
+        /* ===============================
+   🔥 FIX COMPLETO VISTA PRODUCTO (MÓVIL)
+   =============================== */
+@media (max-width: 600px) {
+
+    /* Modal centrado y más pequeño */
+    #productModal .auth-content {
+        width: 95% !important;
+        max-width: 420px !important;
+        border-radius: 16px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        background: #fff !important;
+    }
+
+    /* Imagen principal */
+    #productMainImage {
+        width: 100% !important;
+        height: 260px !important;
+        background-size: cover !important;
+        background-position: center !important;
+        border-radius: 0 !important;
+    }
+
+    #productMainImgTag {
+        width: 100% !important;
+        height: 260px !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+    }
+
+    /* Mini-imágenes en fila */
+    .product-gallery {
+        display: flex !important;
+        justify-content: center !important;
+        padding: 10px !important;
+        gap: 10px !important;
+        overflow-x: auto !important;
+    }
+
+    .product-gallery img {
+        width: 60px !important;
+        height: 60px !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+        border: 2px solid #ddd !important;
+    }
+
+    /* Texto e info */
+    #productModal .modal-info {
+        padding: 18px !important;
+    }
+
+    #productModal h2 {
+        font-size: 1.35rem !important;
+        color: #222 !important;
+        font-weight: 700 !important;
+        margin-bottom: 6px !important;
+    }
+
+    #modalProductCategory {
+        font-size: 0.95rem !important;
+        color: #666 !important;
+        margin-bottom: 10px !important;
+        font-weight: 600 !important;
+    }
+
+    #modalProductPrice {
+        font-size: 1.4rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 18px !important;
+        color: #111 !important;
+    }
+
+    /* Selector de talla */
+    .size-selector {
+        margin-bottom: 20px !important;
+    }
+
+    .size-selector select {
+        width: 100% !important;
+        font-size: 1rem !important;
+        padding: 12px !important;
+        border-radius: 10px !important;
+        border: 1px solid #ccc !important;
+    }
+
+    #modalProductDescription {
+        margin-top: 14px !important;
+        font-size: 0.95rem !important;
+        color: #333 !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Stock */
+    #modalProductStock {
+        margin-top: 10px !important;
+        font-size: 0.9rem !important;
+        color: #444 !important;
+    }
+
+    /* Botones */
+    #productModal .modal-buttons {
+        padding: 16px !important;
+        gap: 10px !important;
+        display: flex !important;
+    }
+
+    .btn-add-cart,
+    .add-to-cart-btn {
+        flex: 1 !important;
+        padding: 14px !important;
+        border-radius: 10px !important;
+        font-size: 1rem !important;
+    }
+}
     </style>
 </head>
 <body>
