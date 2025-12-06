@@ -2500,19 +2500,66 @@ main {
                 </div>
                 <div id="productThumbnails" style="display:flex; gap:0.5rem; margin-top:0.8rem; overflow-x:auto;"></div>
             </div>
-            <div style="width:380px;">
-                <h2 id="modalProductName">Producto</h2>
-                <p id="modalProductCategory" style="color:#666; font-weight:700; text-transform:uppercase; font-size:0.9rem"></p>
-                <p id="modalProductPrice" style="font-size:1.25rem; color:var(--primary); font-weight:800; margin-top:0.6rem"></p>
-                <div class="form-group" style="margin-top:0.6rem;">
-                    <label>Talla</label>
-                    <select id="modalProductSizeSelect" style="width:100%; padding:0.6rem;">
-                        <option value="">Selecciona talla</option>
-                    </select>
-                </div>
-                <p id="modalProductDesc" style="margin-top:1rem; color:#333"></p>
-                <p id="modalProductStock" style="margin-top:0.5rem; color:#666"></p>
-                <div style="margin-top:1.2rem; display:flex; gap:0.5rem;">
+    <div style="width:380px;">
+
+    <h2 id="modalProductName">Producto</h2>
+
+    <p id="modalProductCategory" style="color:#666; font-weight:700; text-transform:uppercase; font-size:0.9rem;"></p>
+
+    <p id="modalProductPrice" style="font-size:1.25rem; color:var(--primary); font-weight:800; margin-top:0.6rem;"></p>
+
+    <div class="form-group" style="margin-top:0.6rem;">
+        <label>Talla</label>
+        <select id="modalProductSizeSelect" style="width:100%; padding:0.6rem;">
+            <option value="">Selecciona talla</option>
+        </select>
+    </div>
+
+    <p id="modalProductDesc" style="margin-top:1rem; color:#333;"></p>
+    <p id="modalProductStock" style="margin-top:0.5rem; color:#666;"></p>
+
+
+    <!-- =============================================================== -->
+    <!-- 🔥🔥🔥   SECCIÓN DE RESEÑAS REALMENTE FUNCIONAL   🔥🔥🔥 -->
+    <!-- =============================================================== -->
+
+    <div id="reviewsSection" style="margin-top:1.5rem;">
+        
+        <h3 style="font-size:1.2rem; margin-bottom:10px; font-weight:700;">
+            Reseñas
+        </h3>
+
+        <!-- CONTENEDOR DONDE APARECEN LAS RESEÑAS -->
+        <div id="reviewsContainer" style="margin-bottom:20px;"></div>
+
+        <h4 style="font-size:1rem; margin-bottom:6px;">Escribe una reseña</h4>
+
+        <select id="reviewRating" 
+                style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc;">
+            <option value="5">⭐ 5 - Excelente</option>
+            <option value="4">⭐ 4 - Muy bueno</option>
+            <option value="3">⭐ 3 - Bueno</option>
+            <option value="2">⭐ 2 - Regular</option>
+            <option value="1">⭐ 1 - Malo</option>
+        </select>
+
+        <input id="reviewUsername" type="text" placeholder="Tu nombre (opcional)"
+               style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
+
+        <textarea id="reviewComment" placeholder="Escribe tu opinión..."
+                  style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
+        </textarea>
+
+        <button onclick="submitReview()" 
+                style="width:100%; padding:12px; background:#ff4500; color:white; border:none; border-radius:10px; font-size:1rem;">
+            Publicar reseña
+        </button>
+
+    </div>
+
+    <!-- =============================================================== -->
+    
+</div>
                     <button class="btn btn-primary" id="modalAddCartBtn">Agregar al Carrito</button>
                     <button class="btn" onclick="closeProductModal()">Cerrar</button>
                 </div>
