@@ -1,56 +1,21 @@
 {
-  "name": " streerwear - Tienda de Ropa Urbana",
-  "short_name": "streetwear",
-  "description": "Tu tienda de ropa urbana favorita. Compra las mejores prendas de moda urbana",
-  "start_url": "/streetwear/",
+  "name": "StreetWearX - Tienda Urbana",
+  "short_name": "StreetWearX",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "orientation": "portrait-primary",
-  "scope": "/streetwear/",
   "icons": [
     {
       "src": "favicon.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "favicon.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot.png",
-      "sizes": "540x720",
       "type": "image/png"
-    }
-  ],
-  "categories": ["shopping"],
-  "shortcuts": [
-    {
-      "name": "Hombres",
-      "short_name": "Hombres",
-      "description": "Ver colección de hombres",
-      "url": "/streetwear/?category=hombres",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Mujeres",
-      "short_name": "Mujeres",
-      "description": "Ver colección de mujeres",
-      "url": "/streetwear/?category=mujeres",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Carrito",
-      "short_name": "Carrito",
-      "description": "Ver carrito de compras",
-      "url": "/streetwear/?view=cart",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
     }
   ]
 }
