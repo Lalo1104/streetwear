@@ -1569,6 +1569,87 @@ header {
 .overlay.active {
     display: block;
 }
+        /* ===== RESPONSIVE PARA CELULAR ===== */
+@media (max-width: 480px) {
+
+    /* Ajustar header */
+    header {
+        padding: 8px 12px;
+        height: auto;
+    }
+
+    /* Iconos más pequeños */
+    .icon-btn {
+        font-size: 18px !important;
+    }
+
+    /* LOGO del header más pequeño */
+    .logo-img {
+        height: 32px !important;
+    }
+
+    /* Banner más pequeño */
+    .hero-banner {
+        height: 22vh !important;
+        margin-top: 60px !important;
+    }
+
+    /* Ajustar logo del banner */
+    .hero-logo {
+        width: 140px !important;
+        margin-top: 5px !important;
+    }
+
+    /* Ajustar textos del banner */
+    .hero-banner-content h1 {
+        font-size: 1.6rem !important;
+    }
+
+    .hero-banner-content p {
+        font-size: 0.9rem !important;
+    }
+
+    /* Botón del banner */
+    .btn-hero {
+        padding: 9px 18px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Espaciado para que el contenido no se empalme */
+    main {
+        padding-top: 30vh !important;
+    }
+
+    /* TARJETAS DE PRODUCTOS */
+    .products-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        padding: 0 1rem !important;
+    }
+
+    .product-card {
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .product-card img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover;
+    }
+
+    /* Sidebar que cubra toda la pantalla */
+    .sidebar {
+        width: 85% !important;
+        max-width: 300px;
+        height: 100vh !important;
+        z-index: 99999 !important;
+    }
+
+    .overlay {
+        z-index: 99998 !important;
+    }
+}
     </style>
 </head>
 <body>
