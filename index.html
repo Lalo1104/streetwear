@@ -3889,7 +3889,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // === AGREGAR PRODUCTO DESDE EL MODAL ===
 if (document.getElementById("modalAddCartBtn")) {
     document.getElementById("modalAddCartBtn").onclick = function () {
-        addToCart(currentReviewProduct);
+        addToCart(currentReviewProductId);
     };
 }
     </script>
@@ -4040,9 +4040,8 @@ function loadRecentProducts() {
 /* ============================
    SISTEMA DE RESEÑAS
 ============================ */
-
-let currentProductId = null;
-
+let currentReviewProduct = null;
+        
 // ----- Cargar reseñas -----
 function loadReviews(productId) {
     const saved = JSON.parse(localStorage.getItem("reviews")) || {};
@@ -4089,17 +4088,25 @@ function saveReview() {
     document.getElementById("reviewUsername").value = "";
     document.getElementById("reviewRating").value = "";
 
-    loadReviews(currentProductId);
-}
+     loadReviews(currentReviewProduct.id);
+/* Modifica tu función actual de abrir producto */
 /* Modifica tu función actual de abrir producto */
 function openProduct(product) {
-    saveRecentProduct(product); // 🔥 guardar en historial
-    showProductModal(product);  // tu función actual
+
+    // Asignamos correctamente el ID del producto
+    currentProductId = product.id;
+
+    // Guardar en historial (si lo usas)
+    saveRecentProduct(product);
+
+    // Mostrar modal
+    showProductModal(product);
 }
-        function closeProductModal() {
+    function closeProductModal() {
     document.getElementById("productModal").style.display = "none";
     document.body.style.overflow = "auto"; // permite scroll de nuevo
 }
+        
 </script>
 </body>
 </html>
