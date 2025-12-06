@@ -4035,96 +4035,65 @@ function saveRecentProduct(product) {
 function loadRecentProducts() {
     return JSON.parse(localStorage.getItem("recentProducts")) || [];
 }
+/* ============================
+   SISTEMA DE RESEÑAS
+============================ */
 
+let currentProductId = null;
+
+// ----- Cargar reseñas -----
+function loadReviews(productId) {
+    const saved = JSON.parse(localStorage.getItem("reviews")) || {};
+    const reviews = saved[productId] || [];
+
+    const container = document.getElementById("reviewsContainer");
+    if (!container) return;
+
+    container.innerHTML = reviews.length
+        ? reviews.map(r => `
+            <div style="background:#f5f5f5; padding:10px; border-radius:6px; margin-bottom:8px;">
+                <p><strong>${"⭐".repeat(r.rating)}</strong></p>
+                <p>${r.text}</p>
+                <small style="color:#666;">${r.name || "Anónimo"}</small>
+            </div>
+        `).join("")
+        : `<p style="color:#666;">No hay reseñas todavía.</p>`;
+}
+
+// ----- Guardar reseña -----
+function saveReview() {
+    const rating = document.getElementById("reviewRating").value;
+    const text = document.getElementById("reviewText").value.trim();
+    const name = document.getElementById("reviewUsername").value.trim();
+
+    if (!rating || !text) {
+        alert("Por favor selecciona una calificación y escribe una reseña.");
+        return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem("reviews")) || {};
+    if (!saved[currentProductId]) saved[currentProductId] = [];
+
+    saved[currentProductId].push({
+        rating: Number(rating),
+        text,
+        name,
+        date: Date.now()
+    });
+
+    localStorage.setItem("reviews", JSON.stringify(saved));
+
+    document.getElementById("reviewText").value = "";
+    document.getElementById("reviewUsername").value = "";
+    document.getElementById("reviewRating").value = "";
+
+    loadReviews(currentProductId);
+}
 /* Modifica tu función actual de abrir producto */
 function openProduct(product) {
     saveRecentProduct(product); // 🔥 guardar en historial
     showProductModal(product);  // tu función actual
 }
-// ============================================================
-// 🔥 SISTEMA COMPLETO DE RESEÑAS – LOCALSTORAGE
-// ============================================================
-
-let currentReviewProduct = null;
-
-/* 1. Guardar reseña */
-function saveReview(productId, username, rating, comment) {
-    let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
-
-    if (!reviews[productId]) reviews[productId] = [];
-
-    reviews[productId].push({
-        username,
-        rating: parseInt(rating),
-        comment,
-        date: new Date().toLocaleDateString()
-    });
-
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-}
-
-/* 2. Cargar reseñas */
-function loadReviews(productId) {
-    let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
-    return reviews[productId] || [];
-}
-
-/* 3. Mostrar reseñas */
-function renderReviews(productId) {
-    const container = document.getElementById("reviewsContainer");
-    const reviews = loadReviews(productId);
-
-    container.innerHTML = "";
-
-    if (reviews.length === 0) {
-        container.innerHTML = "<p style='color:#777;'>No hay reseñas aún.</p>";
-        return;
-    }
-
-    reviews.forEach(r => {
-        container.innerHTML += `
-            <div style="background:#f7f7f7; padding:10px; border-radius:8px; margin-bottom:10px;">
-                <div style="font-size:1.2rem;">⭐ ${r.rating}</div>
-                <strong>${r.username}</strong><br>
-                <p>${r.comment}</p>
-                <small style="color:#777;">${r.date}</small>
-            </div>
-        `;
-    });
-}
-
-/* 4. Enviar reseña */
-function submitReview() {
-    const rating = document.getElementById("reviewRating").value;
-    const username = document.getElementById("reviewUsername").value || "Anónimo";
-    const comment = document.getElementById("reviewComment").value;
-
-    if (comment.trim() === "") {
-        alert("Escribe un comentario.");
-        return;
-    }
-
-    saveReview(currentReviewProduct.id, username, rating, comment);
-
-    renderReviews(currentReviewProduct.id);
-
-    document.getElementById("reviewComment").value = "";
-    document.getElementById("reviewUsername").value = "";
-}
-
-/* 5. Intercepta showProductModal para cargar las reseñas automáticamente */
-const originalShowProductModal = showProductModal;
-
-showProductModal = function(product) {
-    currentReviewProduct = product;
-
-    originalShowProductModal(product); // Abre el modal normal
-
-    renderReviews(product.id); // Cargar reseñas dentro del modal
-};
-
-/* -------------------------------
-
 </script>
 </body>
 </html>
