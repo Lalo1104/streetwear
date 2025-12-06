@@ -4058,7 +4058,7 @@ function loadReviews(productId) {
                 <small style="color:#777;">${r.date}</small>
             </div>
         `).join('')
-        : "<p style='color:#888;'>No hay reseñas todavía.</p>";
+        : `<p style="color:#888;">No hay reseñas todavía.</p>`;
 }
        globalThis.loadReviews = loadReviews;
 // ----- Guardar reseña -----
