@@ -1,4 +1,4 @@
-const CACHE = "swx-cache-v1";
+const CACHE = "streetwear-cache-v1";
 const FILES = [
   "./",
   "./index.html",
@@ -6,25 +6,38 @@ const FILES = [
   "./icon.png"
 ];
 
-self.addEventListener("install", e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then((cache) => cache.addAll(FILES))
+      .catch(() => {})
+  );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", e=>{
-  e.waitUntil(
-    caches.keys().then(keys=>Promise.all(
-      keys.map(k=>k!==CACHE ? caches.delete(k) : null)
-    ))
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE ? caches.delete(k) : null)))
+    )
   );
   self.clients.claim();
 });
 
-self.addEventListener("fetch", e=>{
-  if(e.request.method!=="GET") return;
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
 
-  e.respondWith(
-    caches.match(e.request)
-    .then(res=>res || fetch(e.request))
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200) return response;
+          const clone = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match("./index.html"));
+    })
   );
 });
