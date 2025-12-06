@@ -1688,38 +1688,117 @@ header.shrink .icon-btn {
     height: 0vh !important;
     overflow: hidden;
 }
+        /* ==== FIX LAYOUT HERO PARA QUE NO ROMPA EN CELULAR ==== */
+.hero-banner {
+    position: relative !important;
+    top: 0 !important;
+    width: 100%;
+    height: 32vh;
+    margin-top: 0;
+    z-index: 1;
+}
+
+.hero-banner.shrink {
+    height: 32vh !important;
+    opacity: 1 !important;
+    overflow: hidden;
+}
+
+/* que el main no dependa del banner fijo */
+main {
+    padding-top: 0 !important;
+}
+        /* ==== RESPONSIVE GRID + MODAL PRODUCTO ==== */
+@media (max-width: 768px) {
+
+    /* 2 productos por fila en el catálogo */
+    .products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+        padding: 0 8px !important;
+    }
+
+    .product-card {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .product-image,
+    .product-card img {
+        width: 100% !important;
+        height: 150px !important;
+        object-fit: cover !important;
+    }
+
+    /* Detalle de producto: columna (imagen arriba, info abajo) */
+    #productModal .auth-content {
+        flex-direction: column !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    #productMainImage {
+        height: 260px !important;
+    }
+
+    #productMainImgTag {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    #productModal h2 {
+        font-size: 1.3rem !important;
+    }
+
+    #modalProductPrice {
+        font-size: 1.2rem !important;
+    }
+
+    .btn-add-cart,
+    .add-to-cart-btn {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 1rem !important;
+        border-radius: 10px !important;
+    }
+}
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
+<header>
+    <a href="#" class="logo">
+        <img src="favicon.png" alt="Logo" class="logo-img">
+    </a>
 
-        <div class="hero-banner">
+    <div class="header-icons">
+        <button class="icon-btn" id="searchBtn" title="Buscar">🔍</button>
+        <button class="icon-btn" id="cartBtn" title="Carrito">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" id="modeBtn" title="Cambiar Modo">Modo: Cliente</button>
+        <button class="icon-btn" id="userBtn" title="Usuario">👤</button>
+        <button class="icon-btn" id="menuBtn" title="Menú">☰</button>
+    </div>
+</header>
+
+<!-- 🔻 banner va fuera del header -->
+<div class="hero-banner">
     <div class="hero-banner-content">
-<img src="favicon.png" alt="Logo" class="hero-logo">
+        <img src="favicon.png" alt="Logo" class="hero-logo">
         <p>Moda urbana — estilo que rompe límites</p>
         <button class="btn-hero" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
             Ver Colección
         </button>
     </div>
 </div>
-      <a href="#" class="logo">
-    <img src="favicon.png" alt="Logo" class="logo-img">
-</a>
-        <div class="header-icons">
-            <button class="icon-btn" id="searchBtn" title="Buscar">🔍</button>
-            <button class="icon-btn" id="cartBtn" title="Carrito">
-                🛒
-                <span class="cart-count" id="cartCount">0</span>
-            </button>
-            <button class="icon-btn" id="modeBtn" title="Cambiar Modo">Modo: Cliente</button>
-            <button class="icon-btn" id="userBtn" title="Usuario">👤</button>
-            <button class="icon-btn" id="menuBtn" title="Menú">☰</button>
-        </div>
-    </header>
 
-    <!-- App Status (debug) -->
-    <div id="appStatus" style="width:100%; background:#111; color:#fff; padding:0.4rem 1rem; font-size:0.9rem; text-align:left;">Estado: iniciando...</div>
+<div id="appStatus" style="width:100%; background:#111; color:#fff; padding:0.4rem 1rem; font-size:0.9rem; text-align:left;">
+    Estado: iniciando...
+</div>
 <!-- Botón para instalar la PWA -->
 <div class="pwa-install-container">
     <button id="pwaInstallBtn" class="btn-install-pwa" style="display:none;">
