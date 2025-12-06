@@ -1539,6 +1539,36 @@ header {
     margin: 0 auto;
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
 }
+        /* ===== FIX PARA SIDEBAR EN CELULAR ===== */
+
+.sidebar {
+    position: fixed !important;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    max-width: 330px;
+    height: 100%;
+    background: #000;
+    z-index: 9999 !important; /* MÁS ALTO QUE EL HEADER Y EL BANNER */
+    overflow-y: auto;
+    transition: left 0.3s ease;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9998 !important; /* Debajo del sidebar, encima de todo */
+}
+
+.overlay.active {
+    display: block;
+}
     </style>
 </head>
 <body>
