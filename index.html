@@ -2217,8 +2217,8 @@ main {
         </div>
 
         <div class="filter-section">
-            <select id="categoryFilter" onchange="filterProducts()">
-                <option value="">Todas las Categorías</option>
+<select id="categoryFilter" onchange="saveSelectedCategory(this.value); filterProducts();">
+    <option value="all">Todas las Categorías</option>
                 <option value="hombres">Hombres</option>
                 <option value="mujeres">Mujeres</option>
                 <option value="unisex">Unisex</option>
@@ -3449,6 +3449,110 @@ document.addEventListener("scroll", () => {
         banner.classList.remove("shrink");
     }
 });
+        /* ============================================================
+   🛒 LOCAL STORAGE – CONFIGURACIÓN COMPLETA
+   ============================================================ */
+
+/* -------------------------------
+   1) GUARDAR / CARGAR CARRITO
+   ------------------------------- */
+function saveCartToLocalStorage() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function loadCartFromLocalStorage() {
+    const saved = localStorage.getItem("cart");
+    if (saved) {
+        cart = JSON.parse(saved);
+        updateCartUI();
+    }
+}
+
+/* Llamar cuando inicie la página */
+loadCartFromLocalStorage();
+
+
+/* -------------------------------
+   2) CATEGORÍA SELECCIONADA
+   ------------------------------- */
+function saveSelectedCategory(category) {
+    localStorage.setItem("selectedCategory", category);
+}
+
+function loadSelectedCategory() {
+    const saved = localStorage.getItem("selectedCategory");
+    if (saved) {
+        const select = document.getElementById("categoryFilter");
+        select.value = saved;
+        filterProducts(); // aplicar filtro
+    }
+}
+
+/* Llamar al inicio */
+loadSelectedCategory();
+
+
+/* -------------------------------
+   3) MODO CLIENTE / ADMIN
+   ------------------------------- */
+let mode = "cliente";
+
+function toggleMode() {
+    mode = mode === "cliente" ? "admin" : "cliente";
+    localStorage.setItem("mode", mode);
+    updateModeUI();
+}
+
+function loadMode() {
+    const saved = localStorage.getItem("mode");
+    if (saved) {
+        mode = saved;
+        updateModeUI();
+    }
+}
+
+/* Llamar al iniciar */
+loadMode();
+
+
+/* -------------------------------
+   4) PRODUCTOS VISTOS RECIENTEMENTE
+   ------------------------------- */
+function saveRecentProduct(product) {
+    let recent = JSON.parse(localStorage.getItem("recentProducts")) || [];
+
+    // eliminar duplicados
+    recent = recent.filter(p => p.id !== product.id);
+
+    // agregar al inicio
+    recent.unshift(product);
+
+    // máximo 10
+    if (recent.length > 10) recent.pop();
+
+    localStorage.setItem("recentProducts", JSON.stringify(recent));
+}
+
+function loadRecentProducts() {
+    return JSON.parse(localStorage.getItem("recentProducts")) || [];
+}
+
+/* Modifica tu función actual de abrir producto */
+function openProduct(product) {
+    saveRecentProduct(product); // 🔥 guardar en historial
+    showProductModal(product);  // tu función actual
+}
+
+
+/* -------------------------------
+   5) CUANDO AGREGAS UN PRODUCTO AL CARRITO
+   ------------------------------- */
+// Modifica esta función donde agregas productos
+function addToCart(product) {
+    cart.push(product);
+    saveCartToLocalStorage(); // 🔥 guardar
+    updateCartUI();
+}
 </script>
 </body>
 </html>
