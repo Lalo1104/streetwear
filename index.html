@@ -1607,6 +1607,68 @@ header {
         min-height: 260px;
     }
 }    
+    /* ====== FIX SIDEBAR EN MÓVIL ====== */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -270px;    /* Oculto por defecto */
+        top: 0;
+        width: 260px;
+        height: 100%;
+        transition: left 0.3s ease;
+        z-index: 9999;
+    }
+
+    .sidebar.active {
+        left: 0;         /* Muestra el menú */
+    }
+
+    /* Fondo oscuro cuando el menú está abierto */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 9998;
+    }
+
+    #overlay.active {
+        display: block;
+    }
+}
+    /* === FIX DEL SIDEBAR EN CELULAR === */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -260px;     /* Oculto por defecto */
+        top: 0;
+        width: 260px;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;          /* Se muestra */
+    }
+
+    /* Overlay que oscurece el fondo cuando está abierto */
+    #overlay {
+        display: none;
+    }
+
+    #overlay.active {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 9998;
+    }
+}
     </style>
 
 </head>
@@ -3095,5 +3157,30 @@ header {
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
 </script>
+    // === CONTROL DEL SIDEBAR ===
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const menuBtn = document.getElementById("menuBtn");
+
+// Abrir y cerrar menú con el botón
+menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+});
+
+// Cerrar menú al tocar el overlay
+overlay.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+// Cerrar menú si tocas cualquier parte fuera del menú
+document.addEventListener("click", (e) => {
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+    }
+});
 </body>
 </html>
