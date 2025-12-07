@@ -3333,10 +3333,10 @@ header {
         document.getElementById('pwaInstallBtn').style.display = 'none';
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
-           // === CONTROL DEL SIDEBAR ===
+// === CONTROL DEL SIDEBAR ===
+const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
-const menuBtn = document.getElementById("menuBtn");
 
 // Abrir y cerrar menú con el botón
 menuBtn.addEventListener("click", (e) => {
@@ -3345,19 +3345,19 @@ menuBtn.addEventListener("click", (e) => {
     overlay.classList.toggle("active");
 });
 
-// Cerrar menú al tocar el overlay
+// Cerrar menú tocando el overlay
 overlay.addEventListener("click", () => {
     sidebar.classList.remove("active");
     overlay.classList.remove("active");
 });
 
-// Cerrar menú si tocas cualquier parte fuera del menú
+// Cerrar menú si tocas fuera
 document.addEventListener("click", (e) => {
     if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
         sidebar.classList.remove("active");
         overlay.classList.remove("active");
     }
-});
+});     
 </script>
 </body>
 </html>
