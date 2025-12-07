@@ -1669,6 +1669,183 @@ header {
         z-index: 9998;
     }
 }
+    /* ============================================================
+   🔧 FIX GENERAL PARA PWA STREETWEARX — MOBILE + MODAL + SIDEBAR
+   ============================================================ */
+
+/* ===== 1. FIX: HAMBURGUESA NO ABRE MENÚ ===== */
+#sidebar {
+    transition: left 0.3s ease !important;
+}
+#sidebar.active {
+    left: 0 !important;
+}
+
+/* Asegurar que en móvil esté escondido por defecto */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -260px;      /* Oculto */
+        width: 260px;
+        height: 100vh;
+        background: #000;
+        z-index: 9999;
+    }
+}
+
+/* ===== 2. FIX: OVERLAY PARA EL MENÚ ===== */
+#overlay {
+    display: none;
+}
+#overlay.active {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9998;
+}
+
+/* ===== 3. FIX MODAL GIGANTE EN CELULAR ===== */
+@media (max-width: 768px) {
+    #productModal .auth-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100vh !important;
+        background: #0b0b0b !important;
+        padding: 1rem !important;
+        overflow-y: auto !important;
+        display: block !important; /* Forzamos una sola columna */
+    }
+
+    /* Imagen principal del producto */
+    #productMainImage {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+        margin-bottom: 1rem;
+    }
+
+    /* Galería de miniaturas */
+    .product-gallery {
+        display: flex !important;
+        gap: 10px !important;
+        overflow-x: auto !important;
+        padding-bottom: 10px !important;
+    }
+
+    .product-gallery img {
+        width: 90px !important;
+        height: 90px !important;
+        object-fit: cover !important;
+        border-radius: 6px !important;
+    }
+
+    /* Ajustamos el texto a una sola columna */
+    .product-details {
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+}
+
+/* ===== 4. FIX DE Z-INDEX (para que el sidebar NO quede oculto) ===== */
+#sidebar {
+    z-index: 9999 !important;
+}
+#menuBtn {
+    z-index: 10000 !important;
+    position: relative;
+}
+    /* ============================================================
+   🎯 FIX DEL CARRUSEL — VERSION FINAL ESTILO NIKE JORDAN
+   ============================================================ */
+
+/* Contenedor del carrusel */
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 0 10px !important;
+}
+
+/* Slide general */
+.carousel-slide {
+    display: flex;
+    gap: 12px;
+    transition: transform 0.3s ease-in-out !important;
+}
+
+/* Tarjetas del carrusel */
+.carousel-product-card {
+    background: #111 !important;
+    min-width: 80% !important;      /* Hace que se vea bien en célular */
+    max-width: 80% !important;      /* Quepan 1 por vista */
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 14px;
+}
+
+/* Imagen del carrusel */
+.carousel-product-card img {
+    width: 100% !important;
+    height: 190px !important;
+    object-fit: cover !important;
+    border-radius: 10px;
+}
+
+/* Texto */
+.carousel-product-name {
+    color: #fff !important;
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.carousel-product-price {
+    color: #ff5252 !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Flechas del carrusel */
+.carousel-btn {
+    background: #e53935 !important;
+    color: #fff !important;
+    border: none;
+    font-size: 1.3rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-btn:hover {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+/* ===============================
+   RESPONSIVE MOBILE
+   =============================== */
+@media (max-width: 768px) {
+
+    .carousel-product-card {
+        min-width: 90% !important;
+        max-width: 90% !important;
+        margin: 0 auto;
+    }
+
+    /* Imagen más grande estilo SNKRS */
+    .carousel-product-card img {
+        height: 220px !important;
+    }
+
+    .carousel-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 1.1rem;
+    }
+}
     </style>
 
 </head>
