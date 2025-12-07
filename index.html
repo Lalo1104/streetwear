@@ -2909,6 +2909,35 @@ header {
         window.toggleCart = function() {
             const el = document.getElementById('cartModal'); if (el) el.classList.toggle('active');
         };
+         // === CONTROL DEL SIDEBAR (hamburguesa) ===
+        window.toggleSidebar = function () {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (!sidebar || !overlay) return;
+
+            const isActive = sidebar.classList.toggle('active');
+
+            if (isActive) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        };
+
+        window.closeSidebar = function () {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (!sidebar || !overlay) return;
+
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        };
+
+        window.openAdminPanel = function() {
+            const el = document.getElementById('adminPanel'); if (el) el.classList.add('active');
+            loadAdminStats();
+            loadAdminProducts();
+        };
 
         window.openAdminPanel = function() {
             const el = document.getElementById('adminPanel'); if (el) el.classList.add('active');
@@ -3333,31 +3362,6 @@ header {
         document.getElementById('pwaInstallBtn').style.display = 'none';
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
-// === CONTROL DEL SIDEBAR ===
-const menuBtn = document.getElementById("menuBtn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-
-// Abrir y cerrar menú con el botón
-menuBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    sidebar.classList.toggle("active");
-    overlay.classList.toggle("active");
-});
-
-// Cerrar menú tocando el overlay
-overlay.addEventListener("click", () => {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-});
-
-// Cerrar menú si tocas fuera
-document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-    }
-});     
 </script>
 </body>
 </html>
