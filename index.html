@@ -3363,5 +3363,110 @@ header {
         document.getElementById('pwaInstalledLabel').style.display = 'inline';
     });
 </script>
+    <!-- ===================================================== -->
+<!-- 🔥 SECCIÓN SOBRE NOSOTROS -->
+<!-- ===================================================== -->
+<section id="sobreNosotros" style="padding: 3rem 1.5rem; background:#000; color:#fff;">
+    <h2 style="color:#ff5252; font-size:2rem; margin-bottom:1rem;">Sobre Nosotros</h2>
+
+    <p style="line-height:1.7; margin-bottom:1.2rem; color:#ddd;">
+        <strong style="color:#ff5252;">¡Bienvenido a StreetWearX!</strong>
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:1.2rem; color:#ddd;">
+        En StreetWearX, somos apasionados de la moda urbana y estamos aquí para ofrecerte 
+        la mejor selección de ropa y accesorios, para que puedas expresar tu estilo único y auténtico.
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:1.2rem; color:#ddd;">
+        Con una mezcla de <strong>streetwear, skate y cultura hip-hop</strong>, nuestro equipo selecciona 
+        cuidadosamente las mejores marcas y diseños para que estés a la moda sin perder comodidad.
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:1.2rem; color:#ddd;">
+        Nuestra misión es brindarte una experiencia de compra en línea excepcional:
+        productos de alta calidad, precios competitivos y un servicio al cliente 
+        que realmente se preocupa por ti.
+    </p>
+
+    <p style="line-height:1.7; margin-top:1.5rem; color:#ff5252; font-weight:600;">
+        ¡Únete a nuestra comunidad y descubre la moda urbana como nunca antes!
+    </p>
+</section>
+
+<!-- ===================================================== -->
+<!-- 🔥 SECCIÓN CONTACTO -->
+<!-- ===================================================== -->
+<section id="contacto" style="padding: 3rem 1.5rem; background:#0a0a0a; color:#fff;">
+    <h2 style="color:#ff5252; font-size:2rem; margin-bottom:1rem;">Contacto</h2>
+
+    <p style="line-height:1.7; margin-bottom:1rem; color:#ddd;">
+        Si tienes dudas, comentarios o necesitas ayuda con tu compra, estamos para ayudarte.
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:0.8rem; color:#ddd;">
+        📩 <strong>Email:</strong> streetwearx@gmail.com
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:0.8rem; color:#ddd;">
+        📞 <strong>Teléfono:</strong> 55-0000-0000
+    </p>
+
+    <p style="line-height:1.7; margin-bottom:0.8rem; color:#ddd;">
+        📍 <strong>Ubicación:</strong> CDMX, México
+    </p>
+
+    <p style="line-height:1.7; margin-top:1.5rem; color:#ff5252; font-weight:600;">
+        ¡Contáctanos! Nuestro equipo estará encantado de ayudarte.
+    </p>
+</section>
+
+<!-- ===================================================== -->
+<!-- 🔥 SCRIPT PARA HACER FUNCIONAR LOS BOTONES DEL MENÚ -->
+<!-- ===================================================== -->
+<script>
+function goToSection(id) {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+
+    // Cerrar menú
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    if (sidebar) sidebar.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+}
+
+function goToContact() {
+    goToSection("contacto");
+}
+</script>
+
+<!-- ===================================================== -->
+<!-- 🔥 CSS PARA QUE EL SIDEBAR FUNCIONE EN MÓVIL -->
+<!-- ===================================================== -->
+<style>
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -260px;
+        width: 260px;
+        height: 100vh;
+        background: #000;
+        z-index: 9999;
+        transition: left 0.3s ease;
+    }
+    #sidebar.active {
+        left: 0 !important;
+    }
+    #overlay.active {
+        display: block !important;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 9998;
+    }
+}
+</style>
 </body>
 </html>
