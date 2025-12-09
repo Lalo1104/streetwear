@@ -1357,8 +1357,7 @@
     text-shadow: 0 0 6px rgba(0,0,0,0.7);
 }
     /* ====================================================
-   🎯 TEMA NIKE JORDAN — NEGRO + ROJO
-   (No cambia funciones, solo colores y feeling)
+   Colores
    ==================================================== */
 :root {
     --primary: #e53935;      /* rojo principal */
@@ -1371,13 +1370,13 @@
     --gray: #b0b0b0;         /* texto secundario */
 }
 
-/* Fondo general oscuro tipo Nike Jordan */
+/* Fondo general  */
 html, body {
     background: #000000;
     color: var(--text);
 }
 
-/* Header tipo Nike: negro con texto blanco */
+/* Header negro con texto blanco */
 header {
     background: var(--white);
     color: var(--secondary);
@@ -1435,7 +1434,7 @@ header {
     color: var(--text);
 }
 
-/* Grid de productos oscura tipo Nike */
+/* Grid de productos oscura  */
 .products-grid {
     background: transparent;
     padding-bottom: 3rem;
@@ -1670,7 +1669,7 @@ header {
     }
 }
     /* ============================================================
-   🔧 FIX GENERAL PARA PWA STREETWEARX — MOBILE + MODAL + SIDEBAR
+   FIX GENERAL 
    ============================================================ */
 
 /* ===== 1. FIX: HAMBURGUESA NO ABRE MENÚ ===== */
@@ -1757,7 +1756,7 @@ header {
     position: relative;
 }
     /* ============================================================
-   🎯 FIX DEL CARRUSEL — VERSION FINAL ESTILO NIKE JORDAN
+   FIX DEL CARRUSEL
    ============================================================ */
 
 /* Contenedor del carrusel */
@@ -2196,12 +2195,12 @@ header {
 
     <!-- Firebase Config & Scripts -->
     <script type="module">
-        // Reemplaza con tu configuración de Firebase
+        //  configuración de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, getDoc, query, where, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        // CONFIGURACIÓN DE FIREBASE - REEMPLAZA CON TUS CREDENCIALES
+        // CONFIGURACIÓN DE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyB-Ag7WIUBcGgJPBg6taUqtGVHgWAwekhY",
             authDomain: "proyect1-37d04.firebaseapp.com",
@@ -2212,7 +2211,7 @@ header {
             measurementId: "G-WBQ6DYGRG8"
         };
 
-        // CONFIGURACIÓN DE CLOUDINARY - REEMPLAZA CON TUS CREDENCIALES
+        // CONFIGURACIÓN DE CLOUDINARY
         const cloudinaryConfig = {
             cloudName: "dv5pdjhso",
             uploadPreset: "streetwearx_unsigned"
@@ -3353,7 +3352,7 @@ header {
     });
 </script>
     <!-- ===================================================== -->
-<!-- 🔥 SECCIÓN SOBRE NOSOTROS -->
+<!--  SECCIÓN SOBRE NOSOTROS -->
 <!-- ===================================================== -->
 <section id="sobreNosotros" style="padding: 3rem 1.5rem; background:#000; color:#fff;">
     <h2 style="color:#ff5252; font-size:2rem; margin-bottom:1rem;">Sobre Nosotros</h2>
@@ -3384,7 +3383,7 @@ header {
 </section>
 
 <!-- ===================================================== -->
-<!-- 🔥 SECCIÓN CONTACTO -->
+<!--  SECCIÓN CONTACTO -->
 <!-- ===================================================== -->
 <section id="contacto" style="padding: 3rem 1.5rem; background:#0a0a0a; color:#fff;">
     <h2 style="color:#ff5252; font-size:2rem; margin-bottom:1rem;">Contacto</h2>
@@ -3412,7 +3411,7 @@ header {
 </section>
 
 <!-- ===================================================== -->
-<!-- 🔥 SCRIPT PARA HACER FUNCIONAR LOS BOTONES DEL MENÚ -->
+<!--  SCRIPT PARA HACER FUNCIONAR LOS BOTONES DEL MENÚ -->
 <!-- ===================================================== -->
 <script>
 function goToSection(id) {
@@ -3432,7 +3431,7 @@ function goToContact() {
 </script>
 
 <!-- ===================================================== -->
-<!-- 🔥 CSS PARA QUE EL SIDEBAR FUNCIONE EN MÓVIL -->
+<!--  CSS PARA QUE EL SIDEBAR FUNCIONE EN MÓVIL -->
 <!-- ===================================================== -->
 <style>
 @media (max-width: 768px) {
