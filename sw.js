@@ -1,7 +1,6 @@
 // StreetWearX - Service Worker
 const CACHE_NAME = "streetwearx-cache-v1";
 
-// Archivos esenciales para offline
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
@@ -39,11 +38,10 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// FETCH (modo offline seguro sin afectar Firebase)
 self.addEventListener("fetch", event => {
   const req = event.request;
 
-  // No cacheamos llamadas dinámicas a Firebase o Cloudinary
+
   if (
     req.url.includes("firebasestorage") ||
     req.url.includes("firebase") ||
