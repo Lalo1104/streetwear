@@ -1,56 +1,53 @@
 {
-  "name": "StreetWearX - Tienda de Ropa Urbana",
+  "name": "StreetWearX",
   "short_name": "StreetWearX",
-  "description": "Tu tienda de ropa urbana favorita. Compra las mejores prendas de moda urbana",
-  "start_url": "/streetwear/",
+  "description": "Tienda de ropa urbana con experiencia tipo app.",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "orientation": "portrait-primary",
-  "scope": "/streetwear/",
+  "orientation": "portrait",
+  "background_color": "#111827",
+  "theme_color": "#111827",
   "icons": [
     {
-      "src": "favicon.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot.png",
-      "sizes": "540x720",
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
       "type": "image/png"
-    }
-  ],
-  "categories": ["shopping"],
-  "shortcuts": [
-    {
-      "name": "Hombres",
-      "short_name": "Hombres",
-      "description": "Ver colección de hombres",
-      "url": "/streetwear/?category=hombres",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
     },
     {
-      "name": "Mujeres",
-      "short_name": "Mujeres",
-      "description": "Ver colección de mujeres",
-      "url": "/streetwear/?category=mujeres",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
     },
     {
-      "name": "Carrito",
-      "short_name": "Carrito",
-      "description": "Ver carrito de compras",
-      "url": "/streetwear/?view=cart",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "src": "icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
