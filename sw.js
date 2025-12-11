@@ -1,61 +1,72 @@
-// StreetWearX - Service Worker
-const CACHE_NAME = "streetwearx-cache-v1";
+const CACHE_NAME = 'streetwearx-cache-v1';
 
-const FILES_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./favicon.png"
+// Archivos que se guardan para trabajar offline
+const PRECACHE_URLS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  // Agrega aquí tus CSS / JS principales si los tienes, por ejemplo:
+  // './styles.css',
+  // './app.js'
 ];
 
-// INSTALACIÓN
-self.addEventListener("install", event => {
-  console.log("[SW] Instalando Service Worker...");
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      console.log("[SW] Cacheando archivos iniciales...");
-      return cache.addAll(FILES_TO_CACHE);
-    })
-  );
+// INSTALACIÓN: precache de recursos básicos
+self.addEventListener('install', (event) => {
+  console.log('📦 [SW] Install');
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .catch((err) => console.error('Error al precachear:', err))
+  );
 });
 
-// ACTIVACIÓN
-self.addEventListener("activate", event => {
-  console.log("[SW] Activando Service Worker...");
+// ACTIVATE: limpieza de cachés viejos
+self.addEventListener('activate', (event) => {
+  console.log('🧹 [SW] Activate');
   event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log("[SW] Eliminando cache viejo:", key);
+            console.log('Borrando caché viejo:', key);
             return caches.delete(key);
           }
         })
-      );
-    })
+      )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
+// FETCH: estrategia "network first con fallback a caché"
+self.addEventListener('fetch', (event) => {
   const req = event.request;
 
-
-  if (
-    req.url.includes("firebasestorage") ||
-    req.url.includes("firebase") ||
-    req.url.includes("cloudinary")
-  ) {
-    return;
-  }
+  // No cacheamos llamadas que no sean GET (POST, etc)
+  if (req.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(req).then(cached => {
-      return (
-        cached ||
-        fetch(req).catch(() => caches.match("./index.html"))
-      );
-    })
+    fetch(req)
+      .then((networkRes) => {
+        // Guardamos copia en caché para la próxima vez
+        const resClone = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+        return networkRes;
+      })
+      .catch(() => {
+        // Si no hay red, devolvemos de caché si existe
+        return caches.match(req).then((cacheRes) => {
+          if (cacheRes) return cacheRes;
+          // Puedes devolver una página offline personalizada si quieres
+          // return caches.match('./offline.html');
+          return new Response('Sin conexión y recurso no encontrado en caché.', {
+            status: 503,
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+          });
+        });
+      })
   );
 });
